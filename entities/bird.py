@@ -53,7 +53,7 @@ class Bird:
     #        self.y += self.flap_height / 3
 
     def apply_gravity(self):
-        if not self.alive or self.desired_height > self.y: return
+        if not self.alive """or self.desired_height > self.y""": return
         
         is_bird_in_death_condition = (
             self.y + self.current_sprite_rect.height 
