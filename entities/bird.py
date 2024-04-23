@@ -1,4 +1,5 @@
 import time
+import pygame
 
 class Bird:
     def __init__(self, screen, sprites, ground_height):
@@ -9,7 +10,7 @@ class Bird:
         self.ground_height = ground_height
         
         # gravidade sob o passaro
-        self.gravity_force = .5
+        self.gravity_force = 4.5
         
         # posicao x e y do passaro
         self.x = self.screen_width / 3
@@ -24,12 +25,12 @@ class Bird:
         
         # status do passaro
         self.alive = True
-        #self.desired_height = self.y
-        #self.flap_height = self.gravity_force + 5
+        self.desired_height = None
+        self.flap_height = -self.gravity_force * 2
 
     def draw(self):
         self.screen.blit(
-            self.sprites[self.current_sprite_index], 
+            self.sprites[self.current_sprite_index],
             (self.x, self.y)
         )
         
@@ -44,17 +45,32 @@ class Bird:
             self.last_sprite_change_time = current_time
 
     def flap(self):
-    #    self.desired_height += self.flap_height
-        return 
-    
-    
-    #def update_height(self):
-    #    if self.desired_height < self.y:
-    #        self.y += self.flap_height / 3
+        if not self.desired_height:
+            self.desired_height = self.y + self.flap_height
+            return
+        
+        self.desired_height += self.flap_height
 
     def apply_gravity(self):
-        if not self.alive or self.desired_height > self.y: return
+        # se houver uma altura desejada
+        if self.desired_height:
+            # e se ainda não estiver nela
+            if self.y > self.desired_height:
+                # vai tentar alcanca-la
+                self.y += self.flap_height
+                return
+            
+            # caso ja estiver na altura desejada ou mais alto,
+            # reseta a altura desejada
+            if self.y <= self.desired_height:
+                self.desired_height = None
+                return
         
+        if not self.alive: return
+        
+        # checa se a (altura do passaro + a hitbox dele)
+        # está encostando no chao, ou seja, ele vai morrer
+        # quando a barriga encostar no solo
         is_bird_in_death_condition = (
             self.y + self.current_sprite_rect.height 
             > self.screen_height - self.ground_height

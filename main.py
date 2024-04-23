@@ -3,19 +3,19 @@ from screeninfo import get_monitors
 from entities.bird import Bird
 from entities.background import Background
 
-# ESPECIFICAÇÕES DOS SPRITES (px)
+# especificacoes dos sprites (px)
 # pássaro    = 34x24
 # background = 288x512
 # chao       = 366x112
 
-# TAMANHO DA TELA DO USUÁRIO
+# tamanho da tela do usuário
 USER_SCREEN = get_monitors()[0]
 WIDTH, HEIGHT = USER_SCREEN.width, USER_SCREEN.height
 
-# SETUP INICIAL DO PYGAME 
+# setup inicial do pygame
 pygame.init()
 
-# screen = LxA da tela
+# screen = W x H da tela
 # clock  = fps
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
@@ -61,7 +61,6 @@ while running:
         bird.draw()
         bird.change_sprite()  
         bird.apply_gravity()
-        # bird.update_height()
     
     pygame.display.flip()
     clock.tick(60)
