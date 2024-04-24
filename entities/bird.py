@@ -1,4 +1,6 @@
 import time
+import math
+import pygame
 
 class Bird:
     def __init__(self, screen, sprites, ground_height):
@@ -25,11 +27,13 @@ class Bird:
         # status do passaro
         self.alive = True
         self.desired_height = None
-        self.flap_height = -self.gravity_force * 2
+        self.flap_height = math.floor(-self.gravity_force * 2)
 
     def draw(self):
+        rotation = 20 if self.desired_height else 0
+        
         self.screen.blit(
-            self.sprites[self.current_sprite_index],
+            pygame.transform.rotate(self.sprites[self.current_sprite_index], rotation),
             (self.x, self.y)
         )
         
@@ -44,6 +48,8 @@ class Bird:
             self.last_sprite_change_time = current_time
 
     def flap(self):
+        if not self.alive: return
+        
         if not self.desired_height:
             self.desired_height = self.y + self.flap_height
             return

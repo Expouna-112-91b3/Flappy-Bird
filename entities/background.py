@@ -1,10 +1,6 @@
-import pygame
 import math
 
 class Background:
-    ground_width = 0
-    ground_x = 0
-    
     def __init__(self, screen, bg_sprite, ground_sprite):
         self.screen = screen
         self.screen_height = screen.get_height()
