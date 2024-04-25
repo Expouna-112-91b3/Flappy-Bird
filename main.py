@@ -3,66 +3,55 @@ from screeninfo import get_monitors
 from entities.bird import Bird
 from entities.background import Background
 
-# especificacoes dos sprites (px)
-# pássaro    = 34x24
-# background = 288x512
-# chao       = 366x112
+""" ESPECIFICAÇÕES DOS SPRITES
+passaro    = 34x24
+background = 288x512
+chao       = 366x112
+"""
 
-# tamanho da tela do usuário
 USER_SCREEN = get_monitors()[0]
 WIDTH, HEIGHT = USER_SCREEN.width, USER_SCREEN.height
 
-# setup inicial do pygame
 pygame.init()
+SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
+CLOCK = pygame.time.Clock()
 
-# screen = W x H da tela
-# clock  = fps
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-clock = pygame.time.Clock()
+BG_SPRITE = pygame.image.load('./sprites/scenario/background.bmp')
+GROUND_SPRITE = pygame.image.load('./sprites/scenario/ground.bmp')
+SCALED_BG_IMAGE = pygame.transform.scale(BG_SPRITE, (HEIGHT, WIDTH))
+BACKGROUND = Background(SCREEN, SCALED_BG_IMAGE, GROUND_SPRITE)
 
-# construção do background
-bg_sprite = pygame.image.load('./sprites/scenario/background.bmp')
-ground_sprite = pygame.image.load('./sprites/scenario/ground.bmp')
-scaled_bg_image = pygame.transform.scale(bg_sprite, (HEIGHT, WIDTH))
-background = Background(screen, scaled_bg_image, ground_sprite)
+DOWNFLAP_SPRITE = pygame.image.load('./sprites/bird/bird-downflap.bmp')
+MIDFLAP_SPRITE = pygame.image.load('./sprites/bird/bird-midflap.bmp')
+UPFLAP_SPRITE = pygame.image.load('./sprites/bird/bird-upflap.bmp')
+BIRD_SPRITES = [DOWNFLAP_SPRITE, MIDFLAP_SPRITE, UPFLAP_SPRITE]
 
-# construção do pássaro
-downflap_sprite = pygame.image.load('./sprites/bird/bird-downflap.bmp')
-midflap_sprite = pygame.image.load('./sprites/bird/bird-midflap.bmp')
-upflap_sprite = pygame.image.load('./sprites/bird/bird-upflap.bmp')
-bird_sprites = [downflap_sprite, midflap_sprite, upflap_sprite]
+GROUND_HEIGHT = GROUND_SPRITE.get_rect().height
+BIRD = Bird(SCREEN, BIRD_SPRITES, GROUND_HEIGHT)
 
-ground_height = ground_sprite.get_rect().height
-bird = Bird(screen, bird_sprites, ground_height)
-
-running = True
-paused = False
-
+running, paused = True, False
 while running:
-    # metodos de saida
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_ESCAPE]:
+    KEYS = pygame.key.get_pressed()
+    if KEYS[pygame.K_ESCAPE]:
         running = False
         
-    # controles
-    if keys[pygame.K_w]:
-        bird.flap()
+    if KEYS[pygame.K_w]:
+        BIRD.flap()
         
-    if keys[pygame.K_PAUSE]:
+    if KEYS[pygame.K_PAUSE]:
         paused = not paused
 
-    # atualizacao de sprites
     if not paused:
-        background.draw()   
-        bird.draw()
-        bird.change_sprite()  
-        bird.apply_gravity()
+        BACKGROUND.draw()   
+        BIRD.draw()
+        BIRD.change_sprite()  
+        BIRD.apply_gravity()
     
     pygame.display.flip()
-    clock.tick(60)
+    CLOCK.tick(60)
 
 pygame.quit()
