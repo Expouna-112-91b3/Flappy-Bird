@@ -8,7 +8,6 @@ class Background:
         self.screen_width = screen.get_width()
 
         self.bg_sprite = bg_sprite
-
         self.ground_sprite = ground_sprite
         self.ground_rect = self.ground_sprite.get_rect()
         self.ground_width = self.ground_rect.width
