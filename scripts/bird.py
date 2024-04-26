@@ -29,19 +29,18 @@ class Bird:
         self.alive = True
         self.desired_height = None
         self.flap_height = -self.gravity_force * 2.5
-        self.accelleration = 0
+        self.acceleration = 0
 
     def draw(self):
         """o passaro
         ao morrer ficara virado pra baixo,
-        ao pular terá uma rotação de 20°,
-        ao planar não terá rotação,
+        tem rotacao conforme a aceleracao atual
         """
         rotation = 0
         if not self.alive:
             rotation = 180
         else:
-            rotation = 20 if self.desired_height else 0
+            rotation = self.acceleration * 3
 
         rotated_sprite = pygame.transform.rotate(
             self.sprites[self.current_sprite_index],
@@ -111,6 +110,7 @@ class Bird:
 
         if not_in_flap_delay:
             self.last_flap_time = current_time
+            self.acceleration += .5
             if not self.desired_height:
                 self.desired_height = self.y + self.flap_height * 6
                 return
@@ -119,14 +119,19 @@ class Bird:
 
     def die(self): self.alive = False
 
+    def get_acceleration(self): return self.acceleration
+    def get_position(self): return (self.y, self.x)
+
     def apply_gravity(self):
         if self.desired_height:                   # se houver uma altura desejada
             if self.y > self.desired_height:      # e se ainda não estiver nela
                 self.y += self.flap_height / 1.5  # vai tentar alcanca-la
+                self.acceleration += .1           # aumentando a aceleração no processo
                 return
 
             if self.y <= self.desired_height:  # caso ja estiver na altura desejada ou mais alto
                 self.desired_height = None     # reseta a altura desejada
+                self.acceleration += .1       # aumenta a aceleracao para efeito de planagem
                 return
 
         if not self.alive:
@@ -146,4 +151,5 @@ class Bird:
             self.die()
             return
 
+        self.acceleration -= .1
         self.y += self.gravity_force

@@ -1,8 +1,10 @@
 import pygame
+from math import floor
 from screeninfo import get_monitors
 from scripts.bird import Bird
 from scripts.background import Background
 from scripts.pipe import Pipe
+from utils import Utils
 
 """ ESPECIFICAÇÕES DOS SPRITES
 passaro     34x24
@@ -45,6 +47,9 @@ BIRD = Bird(
 PIPE_SPRITE = pygame.image.load('./sprites/pipe/pipe.png')
 PIPE = Pipe(SCREEN, PIPE_SPRITE)
 
+utils = Utils()
+utils.init_font()
+
 running, paused = True, False
 while running:
     for event in pygame.event.get():
@@ -67,6 +72,10 @@ while running:
         BIRD.change_sprite()
         BIRD.apply_gravity()
         # PIPE.draw()
+
+    x, y = BIRD.get_position()
+    utils.draw_font(SCREEN, f"Aceleracao: {BIRD.get_acceleration()}")
+    utils.draw_font(SCREEN, f"Posicao: {floor(x)}, {floor(y)}", pos=(0, 25))
 
     pygame.display.flip()
     CLOCK.tick(60)
