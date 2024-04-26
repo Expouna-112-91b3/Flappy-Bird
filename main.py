@@ -2,6 +2,7 @@ import pygame
 from screeninfo import get_monitors
 from entities.bird import Bird
 from entities.background import Background
+from entities.pipe import Pipe
 
 """ ESPECIFICAÇÕES DOS SPRITES
 passaro    = 34x24
@@ -19,15 +20,30 @@ CLOCK = pygame.time.Clock()
 BG_SPRITE = pygame.image.load('./sprites/scenario/background.bmp')
 GROUND_SPRITE = pygame.image.load('./sprites/scenario/ground.bmp')
 SCALED_BG_IMAGE = pygame.transform.scale(BG_SPRITE, (HEIGHT, WIDTH))
-BACKGROUND = Background(SCREEN, SCALED_BG_IMAGE, GROUND_SPRITE)
+BACKGROUND = Background(
+    SCREEN,
+    SCALED_BG_IMAGE,
+    GROUND_SPRITE,
+)
 
 DOWNFLAP_SPRITE = pygame.image.load('./sprites/bird/bird-downflap.bmp')
 MIDFLAP_SPRITE = pygame.image.load('./sprites/bird/bird-midflap.bmp')
 UPFLAP_SPRITE = pygame.image.load('./sprites/bird/bird-upflap.bmp')
-BIRD_SPRITES = [DOWNFLAP_SPRITE, MIDFLAP_SPRITE, UPFLAP_SPRITE]
+BIRD_SPRITES = [
+    DOWNFLAP_SPRITE,
+    MIDFLAP_SPRITE,
+    UPFLAP_SPRITE,
+]
 
 GROUND_HEIGHT = GROUND_SPRITE.get_rect().height
-BIRD = Bird(SCREEN, BIRD_SPRITES, GROUND_HEIGHT)
+BIRD = Bird(
+    SCREEN,
+    BIRD_SPRITES,
+    GROUND_HEIGHT,
+)
+
+PIPE_SPRITE = pygame.image.load('./sprites/pipe/pipe.png')
+PIPE = Pipe(SCREEN, PIPE_SPRITE)
 
 running, paused = True, False
 while running:
@@ -38,19 +54,20 @@ while running:
     KEYS = pygame.key.get_pressed()
     if KEYS[pygame.K_ESCAPE]:
         running = False
-        
-    if KEYS[pygame.K_w]:
-        BIRD.flap()
-        
+
     if KEYS[pygame.K_PAUSE]:
         paused = not paused
 
     if not paused:
-        BACKGROUND.draw()   
+        if KEYS[pygame.K_w]:
+            BIRD.flap()
+
+        BACKGROUND.draw()
         BIRD.draw()
-        BIRD.change_sprite()  
+        BIRD.change_sprite()
         BIRD.apply_gravity()
-    
+        # PIPE.draw()
+
     pygame.display.flip()
     CLOCK.tick(60)
 

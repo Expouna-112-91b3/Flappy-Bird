@@ -16,25 +16,21 @@ class Background:
 
         self.ground_movement_x = 0
 
-        self.ground_movement_x = 0
-
     def draw(self):
-        """TODO
-        adicionar dinamicidade ao pintar background
-        """
+        # TODO adicionar dinamicidade ao pintar background
         self.screen.blit(self.bg_sprite, (0, -self.ground_x))
         self.screen.blit(self.bg_sprite, (self.screen_height, -self.ground_x))
 
-        """ 
-        o sprite do chao reseta ao chegar na metade do outro
+        """sprite 
+        do chao reseta ao chegar na metade do outro
         chao conectado a ele, de forma que os sprites nao
         acabem repentinamente
         """
         if self.ground_movement_x <= -self.screen_width / 2:
             self.ground_movement_x = 0
 
-        """
-        quantidade de grounds conectados eh igual a tamanho da
+        """quantidade 
+        de grounds conectados eh igual a tamanho da
         tela / 312 (largura do ground em pixels - a sobreposicao entre eles)
         arredondado para cima
         """
