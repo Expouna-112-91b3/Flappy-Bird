@@ -5,7 +5,7 @@ import pygame
 class Bird:
     def __init__(self, screen, sprites, ground_height):
         self.screen = screen
-        self.screen_height, = screen.get_height()
+        self.screen_height = screen.get_height()
         self.screen_width = screen.get_width()
         self.ground_height = ground_height
 
@@ -17,7 +17,7 @@ class Bird:
         self.sprites = sprites
         self.current_sprite_index = 0
         self.current_sprite_rect = (
-            self.sprites[self.current_sprite_index].get_rect(),
+            self.sprites[self.current_sprite_index].get_rect()
         )
 
         self.last_sprite_change_time = time.time()
