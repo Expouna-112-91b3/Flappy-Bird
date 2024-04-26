@@ -1,13 +1,13 @@
 import pygame
 from screeninfo import get_monitors
-from entities.bird import Bird
-from entities.background import Background
-from entities.pipe import Pipe
+from scripts.bird import Bird
+from scripts.background import Background
+from scripts.pipe import Pipe
 
 """ ESPECIFICAÇÕES DOS SPRITES
-passaro    = 34x24
-background = 288x512
-chao       = 366x112
+passaro     34x24
+background  288x512
+chao        366x112
 """
 
 USER_SCREEN = get_monitors()[0]
@@ -26,9 +26,9 @@ BACKGROUND = Background(
     GROUND_SPRITE,
 )
 
-DOWNFLAP_SPRITE = pygame.image.load('./sprites/bird/bird-downflap.bmp')
-MIDFLAP_SPRITE = pygame.image.load('./sprites/bird/bird-midflap.bmp')
-UPFLAP_SPRITE = pygame.image.load('./sprites/bird/bird-upflap.bmp')
+DOWNFLAP_SPRITE = pygame.image.load('./sprites/bird/downflap.bmp')
+MIDFLAP_SPRITE = pygame.image.load('./sprites/bird/midflap.bmp')
+UPFLAP_SPRITE = pygame.image.load('./sprites/bird/upflap.bmp')
 BIRD_SPRITES = [
     DOWNFLAP_SPRITE,
     MIDFLAP_SPRITE,
