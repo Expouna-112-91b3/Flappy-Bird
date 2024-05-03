@@ -133,20 +133,14 @@ class Bird:
     def apply_gravity(self):
         if self.desired_height:  # se tiver uma altura desejada
             if self.y > self.desired_height:  # e se ainda não estiver nela
-                
-                """checa
-                se a altura do passaro mais a hitbox dele
-                está encostando no topo da tela (ele vai parar de pular / 
-                ganhar altura)
-                """
-                is_bird_in_game_max_height = (
-                    self.y + self.current_sprite_rect.height <= 0
+                is_bird_in_game_max_height = (  # se a altura do passaro mais a hitbox dele
+                    self.y + self.current_sprite_rect.height <= 0  # está encostando no topo da tela
                 )
 
-                if is_bird_in_game_max_height:
-                    self.desired_height = 0
+                if is_bird_in_game_max_height: # reseta a altura desejada e ele comecara a cair
+                    self.desired_height = None
                     return
-                
+
                 self.y += self.flap_height / 1.5  # se nao estiver, vai tentar alcanca-la
                 self.acceleration += .1           # aumentando a aceleração no processo
                 return
