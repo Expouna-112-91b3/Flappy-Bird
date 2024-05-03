@@ -31,6 +31,12 @@ class Bird:
         self.flap_height = -self.gravity_force * 2.5
         self.acceleration = 0
 
+    def get_acceleration(self): return self.acceleration
+    def get_position(self): return (self.y, self.x)
+    def get_is_alive(self): return self.alive
+
+    def die(self): self.alive = False
+
     def draw(self):
         """o passaro
         ao morrer ficara virado pra baixo,
@@ -102,14 +108,14 @@ class Bird:
             self.last_sprite_change_time = current_time
 
     def flap(self):
+        if not self.alive:
+            return
+        
         is_bird_in_game_max_height = (
             self.y + self.current_sprite_rect.height <= 0
         )
 
         if is_bird_in_game_max_height:
-            return
-
-        if not self.alive:
             return
 
         current_time = time.time()
@@ -124,30 +130,33 @@ class Bird:
 
             self.desired_height += self.flap_height * 6
 
-    def die(self): self.alive = False
-
-    def get_acceleration(self): return self.acceleration
-    def get_position(self): return (self.y, self.x)
-    def get_is_alive(self): return self.alive
-
     def apply_gravity(self):
         if self.desired_height:  # se tiver uma altura desejada
             if self.y > self.desired_height:  # e se ainda não estiver nela
-                is_bird_in_game_max_height = (  # se a altura do passaro mais a hitbox dele
-                    self.y + self.current_sprite_rect.height <= 0  # está encostando no topo da tela
+                
+                """checa 
+                se a altura do passaro mais a hitbox dele
+                está encostando no topo da tela
+                """
+                is_bird_in_game_max_height = (
+                    self.y + self.current_sprite_rect.height <= 0
                 )
 
-                if is_bird_in_game_max_height: # reseta a altura desejada e ele comecara a cair
+                if is_bird_in_game_max_height:  # se sim, ele reseta a altura desejada e comeca a cair
                     self.desired_height = None
                     return
 
-                self.y += self.flap_height / 1.5  # se nao estiver, vai tentar alcanca-la
-                self.acceleration += .1           # aumentando a aceleração no processo
+                """se
+                se nao estiver na altura desejada, nem no topo da tela, vai tentar alcanca-la,
+                aumentando a aceleração no processo
+                """
+                self.y += self.flap_height / 1.5
+                self.acceleration += .1
                 return
 
             if self.y <= self.desired_height:  # caso ja estiver na altura desejada ou mais alto
                 self.desired_height = None     # reseta a altura desejada
-                self.acceleration += .2        # aumenta a aceleracao para efeito de planagem
+                self.acceleration += .1        # aumenta a aceleracao para efeito de planagem
                 return
 
         if not self.alive:
