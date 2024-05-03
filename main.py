@@ -76,6 +76,7 @@ while running:
     x, y = BIRD.get_position()
     utils.draw_font(SCREEN, f"Aceleracao: {BIRD.get_acceleration()}")
     utils.draw_font(SCREEN, f"Posicao: {floor(x)}, {floor(y)}", pos=(0, 25))
+    utils.draw_font(SCREEN, f"Tela: {SCREEN.get_height()}, {SCREEN.get_width()}", pos=(0, 50))
 
     pygame.display.flip()
     CLOCK.tick(60)

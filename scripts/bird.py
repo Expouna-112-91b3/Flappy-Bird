@@ -34,7 +34,7 @@ class Bird:
     def draw(self):
         """o passaro
         ao morrer ficara virado pra baixo,
-        tem rotacao conforme a aceleracao atual
+        ele tem rotacao conforme a aceleracao atual
         """
         rotation = 0
         if not self.alive:
@@ -102,6 +102,13 @@ class Bird:
             self.last_sprite_change_time = current_time
 
     def flap(self):
+        is_bird_in_game_max_height = (
+            self.y + self.current_sprite_rect.height <= 0
+        )
+
+        if is_bird_in_game_max_height:
+            return
+
         if not self.alive:
             return
 
@@ -121,17 +128,32 @@ class Bird:
 
     def get_acceleration(self): return self.acceleration
     def get_position(self): return (self.y, self.x)
+    def get_is_alive(self): return self.alive
 
     def apply_gravity(self):
-        if self.desired_height:                   # se houver uma altura desejada
-            if self.y > self.desired_height:      # e se ainda não estiver nela
-                self.y += self.flap_height / 1.5  # vai tentar alcanca-la
+        if self.desired_height:  # se tiver uma altura desejada
+            if self.y > self.desired_height:  # e se ainda não estiver nela
+                
+                """checa
+                se a altura do passaro mais a hitbox dele
+                está encostando no topo da tela (ele vai parar de pular / 
+                ganhar altura)
+                """
+                is_bird_in_game_max_height = (
+                    self.y + self.current_sprite_rect.height <= 0
+                )
+
+                if is_bird_in_game_max_height:
+                    self.desired_height = 0
+                    return
+                
+                self.y += self.flap_height / 1.5  # se nao estiver, vai tentar alcanca-la
                 self.acceleration += .1           # aumentando a aceleração no processo
                 return
 
             if self.y <= self.desired_height:  # caso ja estiver na altura desejada ou mais alto
                 self.desired_height = None     # reseta a altura desejada
-                self.acceleration += .1       # aumenta a aceleracao para efeito de planagem
+                self.acceleration += .2        # aumenta a aceleracao para efeito de planagem
                 return
 
         if not self.alive:
