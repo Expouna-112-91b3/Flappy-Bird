@@ -1,3 +1,4 @@
+import math
 import pygame
 
 
@@ -8,19 +9,20 @@ class Pipe:
         self.screen_height = screen.get_height()
 
         self.sprite = sprite
-        self.rotated_sprite = pygame.transform.rotate(self.sprite, 180)
+        self.rotated_sprite = pygame.transform.rotate(
+            self.sprite,
+            180,
+        )
+        self.sprite_rect = self.sprite.get_rect()
 
         self.generation_delay = 1
 
-    """TODO 
     def draw(self):
-        for _ in range():
-            self.screen.blit(
-                self.sprite,
-                (self.screen_width, self.screen_height),
-            )
-            self.screen.blit(
-                self.rotated_sprite,
-                (self.screen_width, self.screen_height),
-            )
-    """
+        self.screen.blit(
+            self.sprite,
+            (self.screen_width / 2, self.screen_height - self.sprite_rect.height),
+        )
+        self.screen.blit(
+            self.rotated_sprite,
+            (self.screen_width / 2, 0),
+        )

@@ -67,16 +67,20 @@ while running:
         if KEYS[pygame.K_w]:
             BIRD.flap()
 
-        BACKGROUND.draw()
+        BACKGROUND.draw_wallpaper()
+        PIPE.draw()
+        BACKGROUND.draw_ground()
         BIRD.draw()
         BIRD.change_sprite()
         BIRD.apply_gravity()
-        # PIPE.draw()
 
     x, y = BIRD.get_position()
     utils.draw_font(SCREEN, f"Aceleracao: {BIRD.get_acceleration()}")
     utils.draw_font(SCREEN, f"Posicao: {floor(x)}, {floor(y)}", pos=(0, 25))
-    utils.draw_font(SCREEN, f"Tela: {SCREEN.get_height()}, {SCREEN.get_width()}", pos=(0, 50))
+    utils.draw_font(
+        SCREEN, f"Tela: {SCREEN.get_height()}, {SCREEN.get_width()}",
+        pos=(0, 50)
+    )
 
     pygame.display.flip()
     CLOCK.tick(60)
