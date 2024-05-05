@@ -12,7 +12,7 @@ class Background:
         self.ground_sprite = ground_sprite
         self.ground_rect = self.ground_sprite.get_rect()
         self.ground_width = self.ground_rect.width
-        self.ground_x = self.screen_height - self.ground_rect.height
+        self.y = self.screen_height - self.ground_rect.height
 
         self.ground_movement_x = 0
 
@@ -36,12 +36,12 @@ class Background:
             self.screen.blit(
                 self.ground_sprite,
                 (loop_size + self.ground_movement_x +
-                 self.ground_movement_x, self.ground_x),
+                 self.ground_movement_x, self.y),
             )
             loop_size = loop_size + self.ground_width
         return
 
     def draw_wallpaper(self):
-        self.screen.blit(self.bg_sprite, (0, -self.ground_x))
-        self.screen.blit(self.bg_sprite, (self.screen_height, -self.ground_x))
+        self.screen.blit(self.bg_sprite, (0, -self.y))
+        self.screen.blit(self.bg_sprite, (self.screen_height, -self.y))
         return

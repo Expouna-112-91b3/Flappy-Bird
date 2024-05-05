@@ -5,11 +5,13 @@ from scripts.bird import Bird
 from scripts.background import Background
 from scripts.pipe import Pipe
 from utils import Utils
+from time import time
 
 """ ESPECIFICAÇÕES DOS SPRITES
 passaro     34x24
 background  288x512
 chao        366x112
+cano        x
 """
 
 USER_SCREEN = get_monitors()[0]
@@ -44,12 +46,19 @@ BIRD = Bird(
     GROUND_HEIGHT,
 )
 
+
+"""geracao
+de pipes funciona da seguinte forma: a cada segundo especificado em
+generation_delay, um novo pipe é adicionado ao array de pipes;
+dentro do loop do jogo, um for itera esses pipes e desenha cada um
+"""
 PIPE_SPRITE = pygame.image.load('./sprites/pipe/pipe.png')
-PIPE = Pipe(SCREEN, PIPE_SPRITE)
+last_generation_time = time()
+generation_delay = 1.5
+pipes = []
 
 utils = Utils()
 utils.init_font()
-
 running, paused = True, False
 while running:
     for event in pygame.event.get():
@@ -68,18 +77,41 @@ while running:
             BIRD.flap()
 
         BACKGROUND.draw_wallpaper()
-        PIPE.draw()
+
+        current_time = time()
+        not_in_generation_delay = current_time - \
+            last_generation_time >= generation_delay
+
+        if not_in_generation_delay:
+            last_generation_time = current_time
+            PIPE = Pipe(
+                SCREEN,
+                GROUND_HEIGHT,
+                MIDFLAP_SPRITE.get_rect().height,
+                PIPE_SPRITE
+            )
+            pipes.append(PIPE)
+
+        for i in range(len(pipes) - 1):
+            if pipes[i].is_in_screen_limit:
+                pipes.pop(i)
+            else:
+                pipes[i].draw()
+
         BACKGROUND.draw_ground()
         BIRD.draw()
+        if not BIRD.alive:
+            paused = True
         BIRD.change_sprite()
         BIRD.apply_gravity()
 
     x, y = BIRD.get_position()
     utils.draw_font(SCREEN, f"Aceleracao: {BIRD.get_acceleration()}")
     utils.draw_font(SCREEN, f"Posicao: {floor(x)}, {floor(y)}", pos=(0, 25))
+    utils.draw_font(SCREEN, f"Canos na tela: {len(pipes) - 1}", pos=(0, 50))
     utils.draw_font(
         SCREEN, f"Tela: {SCREEN.get_height()}, {SCREEN.get_width()}",
-        pos=(0, 50)
+        pos=(0, 75)
     )
 
     pygame.display.flip()

@@ -1,4 +1,4 @@
-import time
+from time import time
 import pygame
 
 
@@ -20,10 +20,10 @@ class Bird:
             self.sprites[self.current_sprite_index].get_rect()
         )
 
-        self.last_sprite_change_time = time.time()
+        self.last_sprite_change_time = time()
         self.sprite_change_delay = .05
 
-        self.last_flap_time = time.time()
+        self.last_flap_time = time()
         self.flap_delay = .15
 
         self.alive = True
@@ -78,7 +78,7 @@ class Bird:
         ou seja, negando essa funcao retornaremos um true, indicando
         que não há mais delay entre a troca de sprites
         """
-        current_time = time.time()
+        current_time = time()
         in_sprite_change_delay = current_time - \
             self.last_sprite_change_time < self.sprite_change_delay
 
@@ -118,7 +118,7 @@ class Bird:
         if is_bird_in_game_max_height:
             return
 
-        current_time = time.time()
+        current_time = time()
         not_in_flap_delay = current_time - self.last_flap_time >= self.flap_delay
 
         if not_in_flap_delay:
