@@ -12,7 +12,8 @@ class Bird:
         self.gravity_force = 4
 
         self.x = self.screen_width / 3
-        self.y = (self.screen_height - self.ground_height) / 2
+        self.total_ground_height = self.screen_height - self.ground_height
+        self.y = self.total_ground_height / 2
 
         self.sprites = sprites
         self.current_sprite_index = 0
@@ -26,6 +27,7 @@ class Bird:
         self.last_flap_time = time()
         self.flap_delay = .15
 
+        self.hitbox = self.y + self.current_sprite_rect.height
         self.alive = True
         self.desired_height = None
         self.flap_height = -self.gravity_force * 2.5
@@ -131,6 +133,9 @@ class Bird:
             self.desired_height += self.flap_height * 6
 
     def apply_gravity(self):
+        if not self.alive:
+            return
+        
         if self.desired_height:  # se tiver uma altura desejada
             if self.y > self.desired_height:  # e se ainda não estiver nela
                 
@@ -147,7 +152,7 @@ class Bird:
                     return
 
                 """se
-                se nao estiver na altura desejada, nem no topo da tela, vai tentar alcanca-la,
+                nao estiver na altura desejada, nem no topo da tela, vai tentar alcanca-la,
                 aumentando a aceleração no processo
                 """
                 self.y += self.flap_height / 1.5
@@ -159,9 +164,6 @@ class Bird:
                 self.acceleration += .1        # aumenta a aceleracao para efeito de planagem
                 return
 
-        if not self.alive:
-            return
-
         """checa 
         se a altura do passaro mais a hitbox dele
         está encostando no chao (ele vai morrer
@@ -169,7 +171,7 @@ class Bird:
         """
         is_bird_in_death_condition = (
             self.y + self.current_sprite_rect.height
-            > self.screen_height - self.ground_height
+            > self.total_ground_height
         )
 
         if is_bird_in_death_condition:

@@ -14,16 +14,18 @@ class Background:
         self.ground_width = self.ground_rect.width
         self.y = self.screen_height - self.ground_rect.height
 
+        self.connected_pipes_size = math.ceil(self.screen_width / 312) * 2
         self.ground_movement_x = 0
 
     def draw_ground(self):
-        """sprite 
+        """sprite
         do chao reseta ao chegar na metade do outro
         chao conectado a ele, de forma que os sprites nao
         acabem repentinamente
         """
-        if self.ground_movement_x <= -self.screen_width / 2:
-            self.ground_movement_x = 0
+        if self.ground_movement_x:
+            if self.ground_movement_x <= -self.screen_width / 2:
+                self.ground_movement_x = 0
 
         """quantidade 
         de grounds conectados eh igual a tamanho da
@@ -31,12 +33,11 @@ class Background:
         arredondado para cima
         """
         loop_size = 0
-        for _ in range(math.ceil(self.screen_width / 312) * 2):
+        for _ in range(self.connected_pipes_size):
             self.ground_movement_x -= .20
             self.screen.blit(
                 self.ground_sprite,
-                (loop_size + self.ground_movement_x +
-                 self.ground_movement_x, self.y),
+                (loop_size + self.ground_movement_x * 2, self.y),
             )
             loop_size = loop_size + self.ground_width
         return
