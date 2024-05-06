@@ -18,7 +18,7 @@ class Utils:
     
     def init_font(self):
         pygame.font.init()
-        self.font = pygame.font.SysFont('Comic Sans MS', 30)
+        self.font = pygame.font.SysFont('Arial', 30)
 
     def draw_font(self, screen, text, color=(0, 0, 0), pos = (0,0)):
         text_surface = self.font.render(str(text), False, color)
