@@ -1,11 +1,12 @@
 import pygame
-from math import floor
+from math import floor, ceil
 from screeninfo import get_monitors
 from scripts.bird import Bird
 from scripts.background import Background
 from scripts.pipe import Pipe
 from utils import Utils
 from time import time
+from config import Config
 
 """ ESPECIFICAÇÕES DOS SPRITES
 passaro     34x24
@@ -13,46 +14,47 @@ background  288x512
 chao        366x112
 cano        x
 """
-
-USER_SCREEN = get_monitors()[0]
-WIDTH, HEIGHT = USER_SCREEN.width, USER_SCREEN.height
+config = Config()
 
 pygame.init()
-SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-CLOCK = pygame.time.Clock()
+SCREEN = config.start_screen()
+USER_SCREEN = config.get_user_screen()
+WALLPAPER = config.get_wallpaper()
+GROUND = config.get_ground()
 
-BG_SPRITE = pygame.image.load('./sprites/scenario/background.bmp')
-GROUND_SPRITE = pygame.image.load('./sprites/scenario/ground.bmp')
-SCALED_BG_IMAGE = pygame.transform.scale(BG_SPRITE, (HEIGHT, WIDTH))
+SCALED_BG_IMAGE = pygame.transform.scale(
+    WALLPAPER["sprite"],
+    (USER_SCREEN["height"], USER_SCREEN["width"]),
+)
+
 BACKGROUND = Background(
     SCREEN,
     SCALED_BG_IMAGE,
-    GROUND_SPRITE,
+    GROUND["sprite"],
 )
 
-DOWNFLAP_SPRITE = pygame.image.load('./sprites/bird/downflap.bmp')
-MIDFLAP_SPRITE = pygame.image.load('./sprites/bird/midflap.bmp')
-UPFLAP_SPRITE = pygame.image.load('./sprites/bird/upflap.bmp')
-BIRD_SPRITES = [
-    DOWNFLAP_SPRITE,
-    MIDFLAP_SPRITE,
-    UPFLAP_SPRITE,
-]
+BIRD = config.get_bird()
+BIRD_SPRITES = BIRD["sprites"]
 
-GROUND_HEIGHT = GROUND_SPRITE.get_rect().height
+GROUND_HEIGHT = GROUND["rect"]["height"]
 BIRD = Bird(
     SCREEN,
-    BIRD_SPRITES,
+    [
+        BIRD_SPRITES["downflap"],
+        BIRD_SPRITES["midflap"],
+        BIRD_SPRITES["upflap"],
+    ],
     GROUND_HEIGHT,
 )
 
+pipe_sprite = pygame.image.load('./sprites/pipe/pipe.png')
 
 """geracao
 de pipes funciona da seguinte forma: a cada segundo especificado em
 generation_delay, um novo pipe é adicionado ao array de pipes;
 dentro do loop do jogo, um for itera esses pipes e desenha cada um
 """
-PIPE_SPRITE = pygame.image.load('./sprites/pipe/pipe.png')
+PIPE = config.get_pipe()
 last_generation_time = time()
 generation_delay = 1.5
 pipes = []
@@ -87,16 +89,13 @@ while running:
             PIPE = Pipe(
                 SCREEN,
                 GROUND_HEIGHT,
-                MIDFLAP_SPRITE.get_rect().height,
-                PIPE_SPRITE
+                BIRD_SPRITES["midflap"].get_rect().height,
+                pipe_sprite
             )
             pipes.append(PIPE)
 
-        for i in range(len(pipes) - 1):
-            if pipes[i].is_in_screen_limit:
-                pipes.pop(i)
-            else:
-                pipes[i].draw()
+        for pipe in pipes:
+            pipe.draw()
 
         BACKGROUND.draw_ground()
         BIRD.draw()
@@ -108,8 +107,8 @@ while running:
     x, y = BIRD.get_position()
     utils.draw_font(SCREEN, f"Passaro:")
     utils.draw_font(
-        SCREEN, 
-        f"Aceleracao: {"{:.2f}".format(BIRD.get_acceleration())}", 
+        SCREEN,
+        f"Aceleracao: {"{:.2f}".format(BIRD.get_acceleration())}",
         pos=(20, 30),
     )
     utils.draw_font(SCREEN, f"Posicao: {floor(x)}, {floor(y)}", pos=(20, 60))
@@ -120,10 +119,13 @@ while running:
         f"Dimensoes: {SCREEN.get_height()}, {SCREEN.get_width()}",
         pos=(20, 120),
     )
-    utils.draw_font(SCREEN, f"Canos visiveis: {len(pipes) - 1}", pos=(20, 150))
-    utils.draw_font(SCREEN, f"FPS: {"{:.0f}".format(CLOCK.get_fps())}", pos=(20, 180))
+    utils.draw_font(SCREEN, f"Canos visiveis: {len([]) - 1}", pos=(20, 150))
+    utils.draw_font(SCREEN, f"FPS: {"{:.0f}".format(
+        config.get_fps())}", pos=(20, 180))
+    utils.draw_font(SCREEN, f"FPS: {"{:.0f}".format(
+        BACKGROUND.ground_movement_x)}", pos=(20, 210))
 
     pygame.display.flip()
-    CLOCK.tick(60)
+    config.clock_tick(60)
 
 pygame.quit()
