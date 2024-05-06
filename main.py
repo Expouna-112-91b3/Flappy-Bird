@@ -1,11 +1,12 @@
 import pygame
-from math import floor, ceil
-from screeninfo import get_monitors
+
+from math import floor
+from time import time
+
 from scripts.bird import Bird
 from scripts.background import Background
 from scripts.pipe import Pipe
 from utils import Utils
-from time import time
 from config import Config
 
 """ ESPECIFICAÇÕES DOS SPRITES
@@ -73,7 +74,7 @@ while running:
 
     if KEYS[pygame.K_PAUSE]:
         paused = not paused
-        
+
     if KEYS[pygame.K_p]:
         config.toggle_debug()
 
