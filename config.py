@@ -4,6 +4,9 @@ import pygame
 
 class Config:
     def __init__(self):
+        # debug
+        self.__debug_mode = False
+        
         # monitor
         self.__user_screen = get_monitors()[0]
         self.__screen_width = self.__user_screen.width
@@ -29,6 +32,9 @@ class Config:
         self.__bird_midflap_sprite = pygame.image.load('./sprites/bird/midflap.bmp')
         self.__bird_upflap_sprite = pygame.image.load('./sprites/bird/upflap.bmp')
         self.__bird_rect = self.__bird_midflap_sprite.get_rect()
+        
+        # GAME screen
+        self.game_screen = None
 
     def get_user_screen(self):
         return {
@@ -73,11 +79,13 @@ class Config:
         }
 
     def start_screen(self):
-        return pygame.display.set_mode((
-            self.__screen_width,
-            self.__screen_height,
-        ))
-        
+        if not self.game_screen:
+            self.game_screen = pygame.display.set_mode((
+                self.__screen_width,
+                self.__screen_height,
+            ))
+            return self.game_screen
+    
     def clock_tick(self, framerate):
         return self.__clock.tick(framerate)
 
@@ -86,3 +94,9 @@ class Config:
     
     def get_fps(self):
         return self.__clock.get_fps()
+    
+    def get_is_debugging(self):
+        return self.__debug_mode
+    
+    def toggle_debug(self):
+        self.__debug_mode = not self.__debug_mode

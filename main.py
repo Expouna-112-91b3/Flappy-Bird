@@ -73,6 +73,9 @@ while running:
 
     if KEYS[pygame.K_PAUSE]:
         paused = not paused
+        
+    if KEYS[pygame.K_p]:
+        config.toggle_debug()
 
     if not paused:
         if KEYS[pygame.K_w]:
@@ -104,26 +107,28 @@ while running:
         BIRD.change_sprite()
         BIRD.apply_gravity()
 
-    x, y = BIRD.get_position()
-    utils.draw_font(SCREEN, f"Passaro:")
-    utils.draw_font(
-        SCREEN,
-        f"Aceleracao: {"{:.2f}".format(BIRD.get_acceleration())}",
-        pos=(20, 30),
-    )
-    utils.draw_font(SCREEN, f"Posicao: {floor(x)}, {floor(y)}", pos=(20, 60))
-
-    utils.draw_font(SCREEN, f"Tela:", pos=(0, 90))
-    utils.draw_font(
-        SCREEN,
-        f"Dimensoes: {SCREEN.get_height()}, {SCREEN.get_width()}",
-        pos=(20, 120),
-    )
-    utils.draw_font(SCREEN, f"Canos visiveis: {len([]) - 1}", pos=(20, 150))
-    utils.draw_font(SCREEN, f"FPS: {"{:.0f}".format(
-        config.get_fps())}", pos=(20, 180))
-    utils.draw_font(SCREEN, f"FPS: {"{:.0f}".format(
-        BACKGROUND.ground_movement_x)}", pos=(20, 210))
+        if config.get_is_debugging():
+            x, y = BIRD.get_position()
+            utils.draw_font(SCREEN, f"Passaro:")
+            utils.draw_font(
+                SCREEN,
+                f"Aceleracao: {"{:.2f}".format(BIRD.get_acceleration())}",
+                pos=(20, 30),
+            )
+            utils.draw_font(SCREEN, f"Posicao: {floor(x)}, {
+                            floor(y)}", pos=(20, 60))
+            utils.draw_font(SCREEN, f"Tela:", pos=(0, 90))
+            utils.draw_font(
+                SCREEN,
+                f"Dimensoes: {SCREEN.get_height()}, {SCREEN.get_width()}",
+                pos=(20, 120),
+            )
+            utils.draw_font(SCREEN, f"Canos visiveis: {
+                            len([]) - 1}", pos=(20, 150))
+            utils.draw_font(SCREEN, f"FPS: {"{:.0f}".format(
+                config.get_fps())}", pos=(20, 180))
+            utils.draw_font(SCREEN, f"FPS: {"{:.0f}".format(
+                BACKGROUND.ground_movement_x)}", pos=(20, 210))
 
     pygame.display.flip()
     config.clock_tick(60)
