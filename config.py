@@ -135,5 +135,4 @@ class Config:
         return self.__debug_mode
 
     def toggle_debug(self):
-        print("me ativou")
         self.__debug_mode = not self.__debug_mode
