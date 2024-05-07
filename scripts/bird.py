@@ -4,11 +4,11 @@ from config import Config
 
 
 class Bird:
-    def __init__(self, screen):
+    def __init__(self):
         self.config = Config()
-        self.screen = screen
+        self.surface = self.config.get_screen()["surface"]
         self.ground = self.config.get_ground()
-        self.user_screen = self.config.get_user_screen()
+        self.user_screen = self.config.get_monitor()
         
         self.ground_height = self.ground["height"]
         self.gravity_force = 4
@@ -62,7 +62,7 @@ class Bird:
             rotation,
         )
 
-        self.screen.blit(
+        self.surface.blit(
             rotated_sprite,
             (self.x, self.y),
         )

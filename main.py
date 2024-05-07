@@ -19,25 +19,20 @@ config = Config()
 
 pygame.init()
 config.start_screen()
-
-SCREEN = config.get_game_screen()
-BACKGROUND = Background(SCREEN)
-BIRD = Bird(SCREEN)
-
-pipe_sprite = pygame.image.load('./sprites/pipe/pipe.png')
+SCREEN = config.get_screen()["surface"]
+BACKGROUND = Background()
+BIRD = Bird()
 
 """geracao
 de pipes funciona da seguinte forma: a cada segundo especificado em
 generation_delay, um novo pipe é adicionado ao array de pipes;
 dentro do loop do jogo, um for itera esses pipes e desenha cada um
 """
-PIPE = config.get_pipe()
 last_generation_time = time()
 generation_delay = 1.5
 pipes = []
 
-utils = Utils()
-utils.init_font()
+Utils.init_font()
 running, paused = True, False
 while running:
     for event in pygame.event.get():
@@ -80,27 +75,25 @@ while running:
         BIRD.apply_gravity()
 
         if config.get_is_debugging():
+            
             x, y = BIRD.get_position()
-            utils.draw_font(SCREEN, f"Passaro:")
-            utils.draw_font(
+            Utils.draw_font(SCREEN, f"Passaro:")
+            Utils.draw_font(
                 SCREEN,
                 f"Aceleracao: {"{:.2f}".format(BIRD.get_acceleration())}",
                 pos=(20, 30),
             )
-            utils.draw_font(SCREEN, f"Posicao: {floor(x)}, {
+            Utils.draw_font(SCREEN, f"Posicao: {floor(x)}, {
                             floor(y)}", pos=(20, 60))
-            utils.draw_font(SCREEN, f"Tela:", pos=(0, 90))
-            utils.draw_font(
+            Utils.draw_font(SCREEN, f"Tela:", pos=(0, 90))
+            Utils.draw_font(
                 SCREEN,
                 f"Dimensoes: {SCREEN.get_height()}, {SCREEN.get_width()}",
                 pos=(20, 120),
             )
-            utils.draw_font(SCREEN, f"Canos visiveis: {
-                            len([]) - 1}", pos=(20, 150))
-            utils.draw_font(SCREEN, f"FPS: {"{:.0f}".format(
-                config.get_fps())}", pos=(20, 180))
-            utils.draw_font(SCREEN, f"FPS: {"{:.0f}".format(
-                BACKGROUND.ground_movement_x)}", pos=(20, 210))
+            Utils.draw_font(SCREEN, f"Canos visiveis: {len(pipes) - 1}", pos=(20, 150))
+            Utils.draw_font(SCREEN, f"FPS: {"{:.0f}".format(config.get_fps())}", pos=(20, 180))
+            Utils.draw_font(SCREEN, f"FPS: {"{:.0f}".format(BACKGROUND.ground_movement_x)}", pos=(20, 210))
 
     pygame.display.flip()
     config.clock_tick(60)
