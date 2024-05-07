@@ -1,13 +1,14 @@
 import pygame
 
-from math import floor
 from time import time
 
 from scripts.bird import Bird
 from scripts.background import Background
 from scripts.pipe import Pipe
+
 from utils import Utils
 from config import Config
+from debugger import Debugger
 
 """ ESPECIFICAÇÕES DOS SPRITES
 passaro     34x24
@@ -32,6 +33,7 @@ last_generation_time = time()
 generation_delay = 1.5
 pipes = []
 
+DEBUGGER = Debugger(BIRD)
 Utils.init_font()
 running, paused = True, False
 while running:
@@ -74,26 +76,7 @@ while running:
         BIRD.change_sprite()
         BIRD.apply_gravity()
 
-        if config.get_is_debugging():
-            
-            x, y = BIRD.get_position()
-            Utils.draw_font(SCREEN, f"Passaro:")
-            Utils.draw_font(
-                SCREEN,
-                f"Aceleracao: {"{:.2f}".format(BIRD.get_acceleration())}",
-                pos=(20, 30),
-            )
-            Utils.draw_font(SCREEN, f"Posicao: {floor(x)}, {
-                            floor(y)}", pos=(20, 60))
-            Utils.draw_font(SCREEN, f"Tela:", pos=(0, 90))
-            Utils.draw_font(
-                SCREEN,
-                f"Dimensoes: {SCREEN.get_height()}, {SCREEN.get_width()}",
-                pos=(20, 120),
-            )
-            Utils.draw_font(SCREEN, f"Canos visiveis: {len(pipes) - 1}", pos=(20, 150))
-            Utils.draw_font(SCREEN, f"FPS: {"{:.0f}".format(config.get_fps())}", pos=(20, 180))
-            Utils.draw_font(SCREEN, f"FPS: {"{:.0f}".format(BACKGROUND.ground_movement_x)}", pos=(20, 210))
+        DEBUGGER.draw_debug(pipes)
 
     pygame.display.flip()
     config.clock_tick(60)
