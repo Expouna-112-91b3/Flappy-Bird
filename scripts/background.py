@@ -7,7 +7,6 @@ class Background:
         self.config = Config()
         
         self.game_screen = self.config.get_screen()
-        
         self.surface = self.game_screen["surface"]
         self.screen_height = self.game_screen["height"]
         self.screen_width = self.game_screen["width"]

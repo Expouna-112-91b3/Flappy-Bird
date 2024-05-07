@@ -61,7 +61,7 @@ while running:
 
         if not_in_generation_delay:
             last_generation_time = current_time
-            PIPE = Pipe(SCREEN)
+            PIPE = Pipe()
             pipes.append(PIPE)
 
         for pipe in pipes:

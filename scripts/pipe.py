@@ -3,11 +3,13 @@ from config import Config
 
 
 class Pipe:
-    def __init__(self, screen):
+    def __init__(self):
         self.config = Config()
-        self.screen = screen
-        self.screen_width = screen.get_width()
-        self.screen_height = screen.get_height()
+        
+        self.game_screen = self.config.get_screen()
+        self.screen = self.game_screen["surface"]
+        self.screen_width = self.game_screen["width"]
+        self.screen_height = self.game_screen["height"]
 
         self.bird = self.config.get_bird()
         self.bird_height = self.bird["height"]
