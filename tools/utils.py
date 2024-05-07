@@ -1,5 +1,9 @@
 import pygame
 
+"""
+CLASSE DE UTILITARIOS GERAIS
+"""
+
 
 class Utils:
     colors = {

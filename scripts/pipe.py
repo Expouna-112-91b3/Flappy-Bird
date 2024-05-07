@@ -1,44 +1,44 @@
-from pygame import transform
 from config import Config
 
 
 class Pipe:
     def __init__(self):
-        self.config = Config()
-        
-        self.game_screen = self.config.get_screen()
-        self.screen = self.game_screen["surface"]
-        self.screen_width = self.game_screen["width"]
-        self.screen_height = self.game_screen["height"]
+        self.__config = Config()
 
-        self.bird = self.config.get_bird()
-        self.bird_height = self.bird["height"]
-        
-        self.ground = self.config.get_ground()
-        self.ground_height = self.ground["height"]
+        self.__game_screen = self.__config.get_screen()
+        self.__screen = self.__game_screen["surface"]
+        self.__screen_width = self.__game_screen["width"]
+        self.__screen_height = self.__game_screen["height"]
 
-        self.pipe = self.config.get_pipe()
-        self.sprite = self.pipe["sprite"]["default"]
-        self.rotated_sprite = self.pipe["sprite"]["rotated"]
-        self.sprite_rect = self.sprite.get_rect()
+        self.__bird = self.__config.get_bird()
+        self.__bird_height = self.__bird["height"]
 
-        self.space_between_pipes = self.bird_height * -5
-        self.top_pipe_y = self.screen_height - self.sprite_rect.height - self.ground_height
-        self.x = self.sprite_rect.width
-        self.is_in_screen_limit = False
-    
+        self.__ground = self.__config.get_ground()
+        self.__ground_height = self.__ground["height"]
+
+        self.__pipe = self.__config.get_pipe()
+        self.__sprite = self.__pipe["sprite"]["default"]
+        self.__rotated_sprite = self.__pipe["sprite"]["rotated"]
+        self.__sprite_rect = self.__sprite.get_rect()
+
+        self.__space_between_pipes = self.__bird_height * -5
+        self.__top_pipe_y = self.__screen_height - \
+            self.__sprite_rect.height - self.__ground_height
+        self.__x = self.__sprite_rect.width
+        self.__is_in_screen_limit = False
+
     def draw(self):
-        if (self.x - self.sprite_rect.width * 2 > self.screen_width):
-            self.is_in_screen_limit = True
+        if (self.__x - self.__sprite_rect.width * 2 > self.__screen_width):
+            self.__is_in_screen_limit = True
 
-        base_x_pos = self.screen_width - self.x + self.sprite_rect.width
-        self.x += 4
+        base_x_pos = self.__screen_width - self.__x + self.__sprite_rect.width
+        self.__x += 4
 
-        self.screen.blit(
-            self.sprite,
-            (base_x_pos, self.top_pipe_y),
+        self.__screen.blit(
+            self.__sprite,
+            (base_x_pos, self.__top_pipe_y),
         )
-        self.screen.blit(
-            self.rotated_sprite,
-            (base_x_pos, self.space_between_pipes),
+        self.__screen.blit(
+            self.__rotated_sprite,
+            (base_x_pos, self.__space_between_pipes),
         )
