@@ -6,9 +6,9 @@ from scripts.bird import Bird
 from scripts.background import Background
 from scripts.pipe import Pipe
 
-from utils import Utils
+from tools.utils import Utils
 from config import Config
-from debugger import Debugger
+from tools.debugger import Debugger
 
 """ ESPECIFICAÇÕES DOS SPRITES
 passaro     34x24
