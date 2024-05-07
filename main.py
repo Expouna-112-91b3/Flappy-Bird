@@ -76,7 +76,8 @@ while running:
         BIRD.change_sprite()
         BIRD.apply_gravity()
 
-        DEBUGGER.draw_debug(pipes)
+        if config.get_is_debugging():
+            DEBUGGER.draw_debug(pipes)
 
     pygame.display.flip()
     config.clock_tick(60)
