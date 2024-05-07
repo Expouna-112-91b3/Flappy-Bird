@@ -1,20 +1,23 @@
 from pygame import transform
+from config import Config
 
 
 class Pipe:
-    def __init__(self, screen, ground_height, bird_height, sprite):
+    def __init__(self, screen):
+        self.config = Config()
         self.screen = screen
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
 
-        self.bird_height = bird_height
-        self.ground_height = ground_height
+        self.bird = self.config.get_bird()
+        self.bird_height = self.bird["height"]
+        
+        self.ground = self.config.get_ground()
+        self.ground_height = self.ground["height"]
 
-        self.sprite = sprite
-        self.rotated_sprite = transform.rotate(
-            self.sprite,
-            180,
-        )
+        self.pipe = self.config.get_pipe()
+        self.sprite = self.pipe["sprite"]["default"]
+        self.rotated_sprite = self.pipe["sprite"]["rotated"]
         self.sprite_rect = self.sprite.get_rect()
 
         self.space_between_pipes = self.bird_height * -5

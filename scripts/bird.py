@@ -1,21 +1,29 @@
 from time import time
 import pygame
+from config import Config
 
 
 class Bird:
-    def __init__(self, screen, sprites, ground_height):
+    def __init__(self, screen):
+        self.config = Config()
         self.screen = screen
-        self.screen_height = screen.get_height()
-        self.screen_width = screen.get_width()
-        self.ground_height = ground_height
-
+        self.ground = self.config.get_ground()
+        self.user_screen = self.config.get_user_screen()
+        
+        self.ground_height = self.ground["height"]
         self.gravity_force = 4
 
-        self.x = self.screen_width / 3
-        self.total_ground_height = self.screen_height - self.ground_height
+        self.x = self.user_screen["width"] / 3
+        self.total_ground_height = self.user_screen["height"] - self.ground_height
         self.y = self.total_ground_height / 2
 
-        self.sprites = sprites
+        self.bird_sprites = self.config.get_bird()["sprites"]
+        self.sprites = [
+            self.bird_sprites["downflap"],
+            self.bird_sprites["midflap"],
+            self.bird_sprites["upflap"],
+        ]
+
         self.current_sprite_index = 0
         self.current_sprite_rect = (
             self.sprites[self.current_sprite_index].get_rect()
@@ -27,17 +35,16 @@ class Bird:
         self.last_flap_time = time()
         self.flap_delay = .15
 
-        self.hitbox = self.y + self.current_sprite_rect.height
-        self.alive = True
+        self.__alive = True
         self.desired_height = None
         self.flap_height = -self.gravity_force * 2.5
         self.acceleration = 0
 
     def get_acceleration(self): return self.acceleration
     def get_position(self): return (self.y, self.x)
-    def get_is_alive(self): return self.alive
+    def get_is_alive(self): return self.__alive
 
-    def die(self): self.alive = False
+    def die(self): self.__alive = False
 
     def draw(self):
         """o passaro
@@ -45,7 +52,7 @@ class Bird:
         ele tem rotacao conforme a aceleracao atual
         """
         rotation = 0
-        if not self.alive:
+        if not self.__alive:
             rotation = 180
         else:
             rotation = self.acceleration * 3
@@ -61,7 +68,7 @@ class Bird:
         )
 
     def change_sprite(self):
-        if not self.alive:
+        if not self.__alive:
             return
 
         """calcula
@@ -110,7 +117,7 @@ class Bird:
             self.last_sprite_change_time = current_time
 
     def flap(self):
-        if not self.alive:
+        if not self.__alive:
             return
         
         is_bird_in_game_max_height = (
@@ -133,12 +140,11 @@ class Bird:
             self.desired_height += self.flap_height * 6
 
     def apply_gravity(self):
-        if not self.alive:
+        if not self.__alive:
             return
         
         if self.desired_height:  # se tiver uma altura desejada
             if self.y > self.desired_height:  # e se ainda não estiver nela
-                
                 """checa 
                 se a altura do passaro mais a hitbox dele
                 está encostando no topo da tela

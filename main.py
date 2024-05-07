@@ -18,35 +18,11 @@ cano        x
 config = Config()
 
 pygame.init()
-SCREEN = config.start_screen()
-USER_SCREEN = config.get_user_screen()
-WALLPAPER = config.get_wallpaper()
-GROUND = config.get_ground()
+config.start_screen()
 
-SCALED_BG_IMAGE = pygame.transform.scale(
-    WALLPAPER["sprite"],
-    (USER_SCREEN["height"], USER_SCREEN["width"]),
-)
-
-BACKGROUND = Background(
-    SCREEN,
-    SCALED_BG_IMAGE,
-    GROUND["sprite"],
-)
-
-BIRD = config.get_bird()
-BIRD_SPRITES = BIRD["sprites"]
-
-GROUND_HEIGHT = GROUND["rect"]["height"]
-BIRD = Bird(
-    SCREEN,
-    [
-        BIRD_SPRITES["downflap"],
-        BIRD_SPRITES["midflap"],
-        BIRD_SPRITES["upflap"],
-    ],
-    GROUND_HEIGHT,
-)
+SCREEN = config.get_game_screen()
+BACKGROUND = Background(SCREEN)
+BIRD = Bird(SCREEN)
 
 pipe_sprite = pygame.image.load('./sprites/pipe/pipe.png')
 
@@ -90,12 +66,7 @@ while running:
 
         if not_in_generation_delay:
             last_generation_time = current_time
-            PIPE = Pipe(
-                SCREEN,
-                GROUND_HEIGHT,
-                BIRD_SPRITES["midflap"].get_rect().height,
-                pipe_sprite
-            )
+            PIPE = Pipe(SCREEN)
             pipes.append(PIPE)
 
         for pipe in pipes:
@@ -103,7 +74,7 @@ while running:
 
         BACKGROUND.draw_ground()
         BIRD.draw()
-        if not BIRD.alive:
+        if not BIRD.get_is_alive():
             paused = True
         BIRD.change_sprite()
         BIRD.apply_gravity()

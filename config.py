@@ -3,14 +3,21 @@ import pygame
 
 
 class Config:
+    _instance = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+    
     def __init__(self):
         # debug
         self.__debug_mode = False
         
         # monitor
         self.__user_screen = get_monitors()[0]
-        self.__screen_width = self.__user_screen.width
-        self.__screen_height = self.__user_screen.height
+        self.__user_screen_width = self.__user_screen.width
+        self.__user_screen_height = self.__user_screen.height
         
         # fps
         self.__clock = pygame.time.Clock()
@@ -18,6 +25,13 @@ class Config:
 
         # wallpaper
         self.__wallpaper_sprite = pygame.image.load('./sprites/scenario/background.bmp')
+        self.__scaled_wallper_sprite = pygame.transform.scale(
+            self.__wallpaper_sprite,
+            (
+                self.__user_screen_height,
+                self.__user_screen_width,
+            )
+        )
         
         # ground
         self.__ground_sprite = pygame.image.load('./sprites/scenario/ground.bmp')
@@ -34,35 +48,40 @@ class Config:
         self.__bird_rect = self.__bird_midflap_sprite.get_rect()
         
         # GAME screen
-        self.game_screen = None
+        self.__game_screen = None
 
     def get_user_screen(self):
         return {
-            "width": self.__screen_width,
-            "height": self.__screen_height,
+            "width": self.__user_screen_width,
+            "height": self.__user_screen_height,
         }
 
     def get_wallpaper(self):
         return {
-            "sprite": self.__wallpaper_sprite,
+            "sprite": {
+                "default": self.__wallpaper_sprite,
+                "scaled": self.__scaled_wallper_sprite,
+            },
         }        
 
     def get_ground(self): 
         return {
             "sprite": self.__ground_sprite,
-            "rect": {
-                "width": self.__ground_sprite_rect.width,
-                "height": self.__ground_sprite_rect.height,
-            }
+            "width": self.__ground_sprite_rect.width,
+            "height": self.__ground_sprite_rect.height,
         }
         
     def get_pipe(self):
         return {
-            "sprite": self.__pipe_sprite,
-            "rect": {
-                "width": self.__pipe_sprite_rect.width,
-                "height": self.__pipe_sprite_rect.height,
-            }
+            "sprite": {
+                "default": self.__pipe_sprite,
+                "rotated": pygame.transform.rotate(
+                    self.__pipe_sprite,
+                    180,
+                ),
+            },
+            "width": self.__pipe_sprite_rect.width,
+            "height": self.__pipe_sprite_rect.height,
         }
     
     def get_bird(self):
@@ -72,19 +91,19 @@ class Config:
                 "midflap": self.__bird_midflap_sprite,
                 "upflap": self.__bird_upflap_sprite,
             },
-            "rect": {
-                "width": self.__bird_rect.width,
-                "height": self.__bird_rect.height
-            }
+            "width": self.__bird_rect.width,
+            "height": self.__bird_rect.height
         }
 
     def start_screen(self):
-        if not self.game_screen:
-            self.game_screen = pygame.display.set_mode((
-                self.__screen_width,
-                self.__screen_height,
-            ))
-            return self.game_screen
+        self.__game_screen = pygame.display.set_mode((
+            self.__user_screen_width,
+            self.__user_screen_height,
+        ))
+        return self.__game_screen
+        
+    def get_game_screen(self):
+        return self.__game_screen
     
     def clock_tick(self, framerate):
         return self.__clock.tick(framerate)

@@ -1,20 +1,24 @@
 import math
+from config import Config
 
 
 class Background:
-    def __init__(self, screen, bg_sprite, ground_sprite):
+    def __init__(self, screen):
+        self.config = Config()
         self.screen = screen
         self.screen_height = screen.get_height()
         self.screen_width = screen.get_width()
 
-        self.bg_sprite = bg_sprite
+        self.user_screen = self.config.get_user_screen()
 
-        self.ground_sprite = ground_sprite
-        self.ground_rect = self.ground_sprite.get_rect()
-        self.ground_width = self.ground_rect.width
-        self.y = self.screen_height - self.ground_rect.height
+        self.wallpaper_sprite = self.config.get_wallpaper()["sprite"]["scaled"]
 
-        self.connected_pipes_size = math.ceil(self.screen_width / 312) * 2
+        self.ground = self.config.get_ground()
+        self.ground_sprite = self.ground["sprite"]
+        self.ground_width = self.ground["width"]
+        self.y = self.screen_height - self.ground["height"]
+
+        self.connected_grounds_size = math.ceil(self.screen_width / 312) * 2
         self.ground_movement_x = 0
 
     def get_ground_x(self):
@@ -36,7 +40,7 @@ class Background:
         """
         loop_size = 0
         self.ground_movement_x -= 3
-        for _ in range(self.connected_pipes_size):
+        for _ in range(self.connected_grounds_size):
             self.screen.blit(
                 self.ground_sprite,
                 (loop_size + self.ground_movement_x, self.y),
@@ -44,5 +48,5 @@ class Background:
             loop_size = loop_size + self.ground_width
 
     def draw_wallpaper(self):
-        self.screen.blit(self.bg_sprite, (0, -self.y))
-        self.screen.blit(self.bg_sprite, (self.screen_height, -self.y))
+        self.screen.blit(self.wallpaper_sprite, (0, -self.y))
+        self.screen.blit(self.wallpaper_sprite, (self.screen_height, -self.y))
