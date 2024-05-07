@@ -8,6 +8,11 @@ import pygame
 
 
 class Config:
+    
+    """
+    as variaveis _instance, _initialized e o metodo __new__
+    configuram a classe como um singleton
+    """
     _instance = None
     _initialized = False
 
