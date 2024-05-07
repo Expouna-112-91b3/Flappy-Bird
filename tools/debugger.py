@@ -2,7 +2,8 @@ from tools.utils import Utils
 from config import Config
 
 """
-CLASSE QUE MOSTRA INTERFACE DE DEBUG
+classe que mostra e gerencia a interface
+de debug
 """
 
 

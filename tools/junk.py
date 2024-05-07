@@ -1,5 +1,5 @@
 """
-CLASSE PARA QUALQUER TIPO DE TESTE
+classe para realizar qualquer tipo de teste
 """
 
 

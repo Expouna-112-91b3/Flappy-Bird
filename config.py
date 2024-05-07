@@ -1,3 +1,8 @@
+"""
+classe das configuracoes gerais do jogo,
+como tamanho de tela, importacao de sprites, etc
+"""
+
 from screeninfo import get_monitors
 import pygame
 

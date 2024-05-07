@@ -1,7 +1,8 @@
 import pygame
 
 """
-CLASSE DE UTILITARIOS GERAIS
+classe de utilitarios gerais, como
+gerador de texto e dicionario de cores
 """
 
 
