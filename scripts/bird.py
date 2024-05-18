@@ -17,7 +17,7 @@ class Bird:
         self.__x = self.__user_screen["width"] / 3
         self.__total_ground_height = self.__user_screen["height"] - \
             self.__ground_height
-        self.y = self.__total_ground_height / 2
+        self.__y = self.__total_ground_height / 2
 
         self.__bird_sprites = self.__config.get_bird()["sprites"]
         self.__sprites = [
@@ -43,7 +43,7 @@ class Bird:
         self.__acceleration = 0
 
     def get_acceleration(self): return self.__acceleration
-    def get_position(self): return (self.y, self.__x)
+    def get_position(self): return (self.__y, self.__x)
     def get_is_alive(self): return self.__alive
 
     def die(self): self.__alive = False
@@ -66,7 +66,7 @@ class Bird:
 
         self.__surface.blit(
             rotated_sprite,
-            (self.__x, self.y),
+            (self.__x, self.__y),
         )
 
     def change_sprite(self):
@@ -123,7 +123,7 @@ class Bird:
             return
 
         is_bird_in_game_max_height = (
-            self.y + self.__current_sprite_rect.height <= 0
+            self.__y + self.__current_sprite_rect.height <= 0
         )
 
         if is_bird_in_game_max_height:
@@ -136,7 +136,7 @@ class Bird:
             self.__last_flap_time = current_time
             self.__acceleration += .5
             if not self.__desired_height:
-                self.__desired_height = self.y + self.__flap_height * 6
+                self.__desired_height = self.__y + self.__flap_height * 6
                 return
 
             self.__desired_height += self.__flap_height * 6
@@ -146,13 +146,13 @@ class Bird:
             return
 
         if self.__desired_height:  # se tiver uma altura desejada
-            if self.y > self.__desired_height:  # e se ainda não estiver nela
+            if self.__y > self.__desired_height:  # e se ainda não estiver nela
                 """checa 
                 se a altura do passaro mais a hitbox dele
                 está encostando no topo da tela
                 """
                 is_bird_in_game_max_height = (
-                    self.y + self.__current_sprite_rect.height <= 0
+                    self.__y + self.__current_sprite_rect.height <= 0
                 )
 
                 if is_bird_in_game_max_height:  # se sim, ele reseta a altura desejada e comeca a cair
@@ -163,11 +163,11 @@ class Bird:
                 nao estiver na altura desejada, nem no topo da tela, vai tentar alcanca-la,
                 aumentando a aceleração no processo
                 """
-                self.y += self.__flap_height / 1.5
+                self.__y += self.__flap_height / 1.5
                 self.__acceleration += .1
                 return
 
-            if self.y <= self.__desired_height:  # caso ja estiver na altura desejada ou mais alto
+            if self.__y <= self.__desired_height:  # caso ja estiver na altura desejada ou mais alto
                 self.__desired_height = None     # reseta a altura desejada
                 self.__acceleration += .1        # aumenta a aceleracao para efeito de planagem
                 return
@@ -178,7 +178,7 @@ class Bird:
         quando a ``barriga`` atingir no solo)
         """
         is_bird_in_death_condition = (
-            self.y + self.__current_sprite_rect.height
+            self.__y + self.__current_sprite_rect.height
             > self.__total_ground_height
         )
 
@@ -187,4 +187,4 @@ class Bird:
             return
 
         self.__acceleration -= .1
-        self.y += self.__gravity_force
+        self.__y += self.__gravity_force
