@@ -24,14 +24,16 @@ SCREEN = config.get_screen()["surface"]
 BACKGROUND = Background()
 BIRD = Bird()
 
-"""geracao
-de pipes funciona da seguinte forma: a cada segundo especificado em
+"""
+a geracao de pipes funciona da seguinte forma: a cada segundo especificado em
 generation_delay, um novo pipe é adicionado ao array de pipes;
 dentro do loop do jogo, um for itera esses pipes e desenha cada um
 """
 last_generation_time = time()
 generation_delay = 1.5
 pipes = []
+
+PIPE = Pipe()
 
 DEBUGGER = Debugger(BIRD)
 Utils.init_font()
@@ -57,17 +59,21 @@ while running:
 
         BACKGROUND.draw_wallpaper()
 
-        current_time = time()
-        not_in_generation_delay = current_time - \
-            last_generation_time >= generation_delay
+        #current_time = time()
+        #not_in_generation_delay = current_time - \
+        #    last_generation_time >= generation_delay
 
-        if not_in_generation_delay:
-            last_generation_time = current_time
-            PIPE = Pipe()
-            pipes.append(PIPE)
+        #if not_in_generation_delay:
+        #   last_generation_time = current_time
+        #   PIPE = Pipe()
+        #    pipes.append(PIPE)
 
-        for pipe in pipes:
-            pipe.draw()
+        #for pipe in pipes:
+        #    pipe.draw()
+        #    pipe.check_collision(BIRD)
+
+        PIPE.draw()
+        PIPE.check_collision(BIRD)
 
         BACKGROUND.draw_ground()
         BIRD.draw()
@@ -77,7 +83,7 @@ while running:
         BIRD.apply_gravity()
 
         if config.get_is_debugging():
-            DEBUGGER.draw_debug(pipes)
+            DEBUGGER.draw_debug()
 
     pygame.display.flip()
     config.clock_tick(60)

@@ -8,7 +8,7 @@ import pygame
 
 
 class Config:
-    
+
     """
     as variaveis _instance, _initialized e o metodo __new__
     configuram a classe como um singleton
@@ -58,12 +58,12 @@ class Config:
             self.__pipe_sprite_rect = self.__pipe_sprite.get_rect()
 
             # bird
-            self.__bird_downflap_sprite = pygame.image.load(
-                './sprites/bird/downflap.bmp')
-            self.__bird_midflap_sprite = pygame.image.load(
-                './sprites/bird/midflap.bmp')
-            self.__bird_upflap_sprite = pygame.image.load(
-                './sprites/bird/upflap.bmp')
+            self.__bird_downflap_sprite = pygame.image\
+                .load('./sprites/bird/downflap.bmp')
+            self.__bird_midflap_sprite = pygame.image\
+                .load('./sprites/bird/midflap.bmp')
+            self.__bird_upflap_sprite = pygame.image\
+                .load('./sprites/bird/upflap.bmp')
             self.__bird_rect = self.__bird_midflap_sprite.get_rect()
 
             # GAME screen

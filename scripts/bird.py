@@ -43,14 +43,14 @@ class Bird:
         self.__acceleration = 0
 
     def get_acceleration(self): return self.__acceleration
-    def get_position(self): return (self.__y, self.__x)
+    def get_position(self): return (self.__x, self.__y)
     def get_is_alive(self): return self.__alive
 
     def die(self): self.__alive = False
 
     def draw(self):
-        """o passaro
-        ao morrer ficara virado pra baixo,
+        """
+        O passaro ficara virado pra baixo ao morrer,
         ele tem rotacao conforme a aceleracao atual
         """
         rotation = 0
@@ -73,8 +73,8 @@ class Bird:
         if not self.__alive:
             return
 
-        """calcula
-        o tempo atual menos o tempo da ultima mudanca de sprite,
+        """
+        calcula o tempo atual menos o tempo da ultima mudanca de sprite,
         depois vê se o valor é menor que o delay de troca
         de sprites
         
@@ -94,8 +94,8 @@ class Bird:
             self.__last_sprite_change_time < self.__sprite_change_delay
 
         if not in_sprite_change_delay:
-            """troca
-            o sprite atual com base no modulo entre o sprite atual mais um 
+            """
+            troca o sprite atual com base no modulo entre o sprite atual mais um 
             e o tamanho do array de sprites
 
             exemplo 1:
@@ -147,8 +147,8 @@ class Bird:
 
         if self.__desired_height:  # se tiver uma altura desejada
             if self.__y > self.__desired_height:  # e se ainda não estiver nela
-                """checa 
-                se a altura do passaro mais a hitbox dele
+                """
+                checa se a altura do passaro mais a hitbox dele
                 está encostando no topo da tela
                 """
                 is_bird_in_game_max_height = (
@@ -159,8 +159,8 @@ class Bird:
                     self.__desired_height = None
                     return
 
-                """se
-                nao estiver na altura desejada, nem no topo da tela, vai tentar alcanca-la,
+                """
+                se nao estiver na altura desejada, nem no topo da tela, vai tentar alcanca-la,
                 aumentando a aceleração no processo
                 """
                 self.__y += self.__flap_height / 1.5
@@ -172,8 +172,8 @@ class Bird:
                 self.__acceleration += .1        # aumenta a aceleracao para efeito de planagem
                 return
 
-        """checa 
-        se a altura do passaro mais a hitbox dele
+        """
+        checa se a altura do passaro mais a hitbox dele
         está encostando no chao (ele vai morrer
         quando a ``barriga`` atingir no solo)
         """

@@ -1,3 +1,5 @@
+from random import randint
+
 from config import Config
 
 
@@ -12,6 +14,7 @@ class Pipe:
 
         self.__bird = self.__config.get_bird()
         self.__bird_height = self.__bird["height"]
+        self.__bird_width = self.__bird["width"]
 
         self.__ground = self.__config.get_ground()
         self.__ground_height = self.__ground["height"]
@@ -27,18 +30,29 @@ class Pipe:
         self.__x = self.__sprite_rect.width
         self.__is_in_screen_limit = False
 
-    def draw(self):
-        if (self.__x - self.__sprite_rect.width * 2 > self.__screen_width):
-            self.__is_in_screen_limit = True
+    def check_collision(self, bird):
+        """
+        se a hitbox do passaro encostar na hitbox do cano,
+        horizontalmente ou verticalmente, ele morre
+        """
+        bird_has_collided = (1)
 
-        base_x_pos = self.__screen_width - self.__x + self.__sprite_rect.width
-        self.__x += 4
+    def draw(self):
+        # checa se o cano está fora da tela
+        if not self.__is_in_screen_limit:
+            if (self.__x - self.__sprite_rect.width * 2 > self.__screen_width):
+                self.__is_in_screen_limit = True
+
+        # posicao inicial dos canos, um pouco antes do inicio da tela
+        x_pos = self.__screen_width - self.__x + self.__sprite_rect.width
+
+        self.__x += 5
 
         self.__screen.blit(
             self.__sprite,
-            (base_x_pos, self.__top_pipe_y),
+            (x_pos, self.__top_pipe_y),
         )
         self.__screen.blit(
             self.__rotated_sprite,
-            (base_x_pos, self.__space_between_pipes),
+            (x_pos, self.__space_between_pipes),
         )

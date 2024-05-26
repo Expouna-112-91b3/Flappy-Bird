@@ -17,7 +17,7 @@ class Debugger:
         self.__screen_width = self.__game_screen["width"]
         self.__screen_height = self.__game_screen["height"]
 
-    def draw_debug(self, pipe_array):
+    def draw_debug(self, pipe_array=None):
         x, y = self.__bird.get_position()
         configs = {
             "Passaro": {
@@ -26,7 +26,7 @@ class Debugger:
             },
             "Tela": {
                 "dimensoes": f"{self.__screen_height} x {self.__screen_width}",
-                "quantidade de canos": len(pipe_array),
+                "quantidade de canos": len(pipe_array) if pipe_array else 0,
                 "fps": "{:.0f}".format(self.__config.get_fps())
             },
         }

@@ -12,42 +12,46 @@ class Background:
         self.__screen_height = self.__game_screen["height"]
         self.__screen_width = self.__game_screen["width"]
 
-        self.__wallpaper_sprite = self.__config.get_wallpaper()[
-            "sprite"]["scaled"]
-
         self.__ground = self.__config.get_ground()
         self.__ground_sprite = self.__ground["sprite"]
         self.__ground_width = self.__ground["width"]
-        self.y = self.__screen_height - self.__ground["height"]
+        self.__ground_height = self.__ground["height"]
+        self.__ground_y = self.__screen_height - self.__ground_height
+
+        self.__wallpaper_sprite = self.__config.get_wallpaper()[
+            "sprite"]["scaled"]
+        self.__wallpper_y = -self.__ground_height * 5
 
         self.__connected_grounds_size = math.ceil(
-            self.__screen_width / 312) * 2
+            self.__screen_width / self.__ground_width) * 2
         self.__ground_movement_x = 0
 
     def draw_ground(self):
-        """reseta
-        o movimento do chao ao chegar na metade do outro
-        chao conectado a ele, de forma que os sprites nao
-        acabem repentinamente
         """
-        if self.__ground_movement_x <= -self.__screen_width / 2:
-            self.__ground_movement_x = -8
+        O chao do jogo é formado por varios sprites de chao conectados;
+        para que o chao nao resete repentinamente, a posicao inicial
+        do chao é resetada sempre que chegar na metade do outro
+        chao conectado a ele
+        """
 
-        """quantidade 
-        de grounds conectados eh igual a tamanho da
+        if self.__ground_movement_x <= -self.__screen_width / 2:
+            self.__ground_movement_x = 0
+
+        """
+        A quantidade de grounds conectados eh igual a tamanho da
         tela / 312 (largura do ground em pixels - a sobreposicao entre eles)
         arredondado para cima
         """
         loop_size = 0
-        self.__ground_movement_x -= 3
+        self.__ground_movement_x -= 5
         for _ in range(self.__connected_grounds_size):
             self.__surface.blit(
                 self.__ground_sprite,
-                (loop_size + self.__ground_movement_x, self.y),
+                (loop_size + self.__ground_movement_x, self.__ground_y),
             )
             loop_size = loop_size + self.__ground_width
 
     def draw_wallpaper(self):
-        self.__surface.blit(self.__wallpaper_sprite, (0, -self.y))
+        self.__surface.blit(self.__wallpaper_sprite, (0, self.__wallpper_y))
         self.__surface.blit(self.__wallpaper_sprite,
-                            (self.__screen_height, -self.y))
+                            (self.__screen_height, self.__wallpper_y))

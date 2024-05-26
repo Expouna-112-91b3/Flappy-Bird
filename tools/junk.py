@@ -2,7 +2,6 @@
 classe para realizar qualquer tipo de teste
 """
 
-
 class Test:
     class logger:
         def log(text):
