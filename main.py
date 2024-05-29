@@ -58,6 +58,9 @@ while running:
             BIRD.flap()
 
         BACKGROUND.draw_wallpaper()
+        PIPE.draw()
+        PIPE.check_collision(BIRD)
+        BACKGROUND.draw_ground()
 
         #current_time = time()
         #not_in_generation_delay = current_time - \
@@ -72,15 +75,11 @@ while running:
         #    pipe.draw()
         #    pipe.check_collision(BIRD)
 
-        PIPE.draw()
-        PIPE.check_collision(BIRD)
-
-        BACKGROUND.draw_ground()
         BIRD.draw()
+        BIRD.apply_gravity()
+        BIRD.change_sprite()
         if not BIRD.get_is_alive():
             paused = True
-        BIRD.change_sprite()
-        BIRD.apply_gravity()
 
         if config.get_is_debugging():
             DEBUGGER.draw_debug()
