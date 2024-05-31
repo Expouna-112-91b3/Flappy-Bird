@@ -5,6 +5,7 @@ como tamanho de tela, importacao de sprites, etc
 
 from screeninfo import get_monitors
 import pygame
+from pygame.image import load
 
 
 class Config:
@@ -38,36 +39,54 @@ class Config:
             self.__max_fps = 60
 
             # wallpaper
-            self.__wallpaper_sprite = pygame.image.load(
-                './sprites/scenario/background.bmp')
-            self.__scaled_wallper_sprite = pygame.transform.scale(
-                self.__wallpaper_sprite,
-                (
-                    self.__monitor_height,
-                    self.__monitor_width,
-                )
-            )
+            self.__wallpaper_sprite = None
+            self.__scaled_wallper_sprite = None
 
             # ground
-            self.__ground_sprite = pygame.image.load(
-                './sprites/scenario/ground.bmp')
-            self.__ground_sprite_rect = self.__ground_sprite.get_rect()
+            self.__ground_sprite = None
+            self.__ground_sprite_rect = None
 
             # pipe
-            self.__pipe_sprite = pygame.image.load('./sprites/pipe/pipe.png')
-            self.__pipe_sprite_rect = self.__pipe_sprite.get_rect()
+            self.__pipe_sprite = None
+            self.__pipe_sprite_rect = None
 
             # bird
-            self.__bird_downflap_sprite = pygame.image\
-                .load('./sprites/bird/downflap.bmp')
-            self.__bird_midflap_sprite = pygame.image\
-                .load('./sprites/bird/midflap.bmp')
-            self.__bird_upflap_sprite = pygame.image\
-                .load('./sprites/bird/upflap.bmp')
-            self.__bird_rect = self.__bird_midflap_sprite.get_rect()
+            self.__bird_downflap_sprite = None
+            self.__bird_midflap_sprite = None
+            self.__bird_upflap_sprite = None
+            self.__bird_rect = None
 
             # GAME screen
             self.__game_screen = None
+
+    def setup_images(self):
+        # wallpaper
+        self.__wallpaper_sprite = load(
+            './sprites/scenario/background.bmp').convert_alpha()
+
+        self.__scaled_wallper_sprite = pygame.transform.scale(
+            self.__wallpaper_sprite,
+            (self.__monitor_height, self.__monitor_width)
+        )
+
+        # ground
+        self.__ground_sprite = load(
+            './sprites/scenario/ground.bmp').convert_alpha()
+        self.__ground_sprite_rect = self.__ground_sprite.get_rect()
+
+        # pipe
+        self.__pipe_sprite = load('./sprites/pipe/pipe.png').convert_alpha()
+        self.__pipe_sprite_rect = self.__pipe_sprite.get_rect()
+
+        # bird
+        self.__bird_downflap_sprite = load(
+            './sprites/bird/downflap.bmp').convert_alpha()
+        self.__bird_midflap_sprite = load(
+            './sprites/bird/midflap.bmp').convert_alpha()
+        self.__bird_upflap_sprite = load(
+            './sprites/bird/upflap.bmp').convert_alpha()
+
+        self.__bird_rect = self.__bird_midflap_sprite.get_rect()
 
     def get_monitor(self):
         return {
