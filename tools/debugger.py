@@ -33,7 +33,7 @@ class Debugger:
 
         distance = 0
         for label in list(configs):
-            Utils.draw_font(
+            Utils.draw_debbuger_font(
                 self.__surface,
                 f"{label}",
                 pos=(0, distance)
@@ -41,7 +41,7 @@ class Debugger:
             distance += 30
 
             for value in list(configs[label]):
-                Utils.draw_font(
+                Utils.draw_debbuger_font(
                     self.__surface,
                     f"{value}: {configs[label][value]}",
                     pos=(20, distance)
