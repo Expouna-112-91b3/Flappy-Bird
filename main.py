@@ -6,6 +6,8 @@ from scripts.bird import Bird
 from scripts.background import Background
 from scripts.pipe import Pipe
 
+from score import Score
+
 from tools.utils import Utils
 from config import Config
 from tools.debugger import Debugger
@@ -21,6 +23,7 @@ config = Config()
 pygame.init()
 config.start_screen()
 config.setup_images()
+Utils.init_font()
 SCREEN = config.get_screen()["surface"]
 BACKGROUND = Background()
 BIRD = Bird()
@@ -37,10 +40,10 @@ last_generation_time = time()
 generation_delay = 1.5
 pipes = []
 pipe_to_delete_index = None
-off_screen_pipes = []
+
+SCORE = Score()
 
 DEBUGGER = Debugger(BIRD)
-Utils.init_font()
 
 running, paused = True, False
 while running:
@@ -93,6 +96,9 @@ while running:
         BIRD.draw()
         BIRD.apply_gravity()
         BIRD.change_sprite()
+
+        SCORE.draw()
+
         if not BIRD.get_is_alive():
             paused = True
 
