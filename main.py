@@ -29,10 +29,14 @@ BIRD = Bird()
 a geracao de pipes funciona da seguinte forma: a cada segundo especificado em
 generation_delay, um novo pipe é adicionado ao array de pipes;
 dentro do loop do jogo, um for itera esses pipes e desenha cada um
+
+quando um pipe sai do jogo, seu index dentro do array de pipes é inserido na
+variavel pipe_to_delete_index e, se existir, é deletado no inicio do loop do jogo
 """
 last_generation_time = time()
 generation_delay = 1.5
 pipes = []
+pipe_to_delete_index = None
 off_screen_pipes = []
 
 DEBUGGER = Debugger(BIRD)
@@ -40,9 +44,9 @@ Utils.init_font()
 
 running, paused = True, False
 while running:
-    for pipe_index in off_screen_pipes:
-        del pipes[pipe_index]
-    off_screen_pipes.clear()
+    if pipe_to_delete_index:
+        del pipes[pipe_to_delete_index]
+        pipe_to_delete_index = None
 
     KEYS = pygame.key.get_pressed()
 
@@ -82,7 +86,7 @@ while running:
             pipe.draw()
             pipe.check_collision(BIRD)
             if pipe.get_is_offscreen():
-                off_screen_pipes.append(i)
+                pipe_to_delete_index = i
 
         BACKGROUND.draw_ground()
 
