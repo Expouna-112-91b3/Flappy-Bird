@@ -7,7 +7,6 @@ from screeninfo import get_monitors
 import pygame
 from pygame.image import load
 
-
 class Config:
 
     """
@@ -58,7 +57,7 @@ class Config:
 
             # GAME screen
             self.__game_screen = None
-
+            
     def setup_images(self):
         # wallpaper
         self.__wallpaper_sprite = load(
@@ -87,6 +86,7 @@ class Config:
             './sprites/bird/upflap.bmp').convert_alpha()
 
         self.__bird_rect = self.__bird_midflap_sprite.get_rect()
+
 
     def get_monitor(self):
         return {

@@ -1,25 +1,22 @@
-from config import Config
 from tools.utils import Utils
 
+from pygame.font import Font
+from pygame.surface import Surface
+
 class Score:
-    def __init__(self):
-        self.__config = Config()
-
-        self.__game_screen = self.__config.get_screen()
-        self.__screen = self.__game_screen["surface"]
-
-
+    def __init__(self, game_screen):
+        self.__game_screen: Surface = game_screen
+        
+        self.__pos = (self.__game_screen.get_width() / 2, 50)
+        
         self.__score = 0
+        
+        self.__font = Font("./fonts/numbers.ttf", 30)
+        
 
-    def draw(self, pos=(0, 0)):
-        Utils.draw_game_text_font(
-            screen=self.__screen,
-            text=str(self.__score),
-            pos=(10, 10)
-        )
-
-    def get(self):
-        return self.__score
+    def draw(self):
+        text_surface = self.__font.render(str(self.__score), False, (0, 0, 0))
+        self.__game_screen.blit(text_surface, self.__pos)
     
     def increase(self):
         self.__score += 1

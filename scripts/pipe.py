@@ -1,10 +1,6 @@
 from random import randint
 
-import math
-
 from config import Config
-
-import pygame
 
 
 class Pipe:
@@ -46,8 +42,10 @@ class Pipe:
         )
 
         self.__is_offscreen = False
+        
+        self.__bird_flew_past = False
 
-    def check_collision(self, bird):
+    def check_collision(self, bird, score):
         # hitboxes
         # pygame.draw.rect(self.__screen, (255, 0, 0), self.__top_pipe_rect, 1)
         # pygame.draw.rect(self.__screen, (255, 0, 0), self.__bottom_pipe_rect, 1)
@@ -63,6 +61,11 @@ class Pipe:
             # se ele estiver mais alto que a ponta do cano superior ou mais baixo que a ponta do cano inferior, ele morre
             if (bird_x_pos <= self.__hitbox[0] or bird_x_pos >= self.__hitbox[1]):
                 bird.die()
+
+        if not self.__bird_flew_past:
+            if bird_x_pos >= self.__top_pipe_rect.centerx:
+                self.__bird_flew_past = True
+                score.increase()
 
     def draw(self):
         move_distance = self.__speed

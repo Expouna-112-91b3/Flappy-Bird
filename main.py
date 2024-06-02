@@ -41,7 +41,7 @@ generation_delay = 1.5
 pipes = []
 pipe_to_delete_index = None
 
-SCORE = Score()
+SCORE = Score(SCREEN)
 
 DEBUGGER = Debugger(BIRD)
 
@@ -87,7 +87,7 @@ while running:
 
         for i, pipe in enumerate(pipes):
             pipe.draw()
-            pipe.check_collision(BIRD)
+            pipe.check_collision(BIRD, SCORE)
             if pipe.get_is_offscreen():
                 pipe_to_delete_index = i
 
