@@ -7,6 +7,8 @@ from screeninfo import get_monitors
 import pygame
 from pygame.image import load
 
+from scenes.scenes import Scenes
+
 class Config:
 
     """
@@ -56,8 +58,46 @@ class Config:
             self.__bird_rect = None
 
             # GAME screen
-            self.__game_screen = None
+            self.__surface = None
             
+            # game status
+            self.__paused = False
+            self.__running = True
+            self.__current_scene = Scenes.MENU.value
+            self.__scores = []
+
+    def get_scores(self):
+        return self.__scores
+    
+    def push_score(self, score):
+        for i, user_score in enumerate(self.__scores):
+            if score[1] >= user_score[1]:
+                continue
+            else:
+                self.__scores.insert(i, score)
+
+    def get_current_scene(self):
+        return self.__current_scene
+    
+    def set_scene(self, scene: int):
+        self.__current_scene = scene
+
+    def get_paused(self):
+        return self.__paused
+
+    def toggle_paused(self):
+        self.__paused = not self.__paused
+        return self.__paused
+    
+    def pause(self):
+        self.__paused = True
+    
+    def get_running(self):
+        return self.__running
+    
+    def close_game(self):
+        self.__running = False
+
     def setup_images(self):
         # wallpaper
         self.__wallpaper_sprite = load(
@@ -84,7 +124,6 @@ class Config:
             './sprites/bird/midflap.bmp').convert_alpha()
         self.__bird_upflap_sprite = load(
             './sprites/bird/upflap.bmp').convert_alpha()
-
         self.__bird_rect = self.__bird_midflap_sprite.get_rect()
 
 
@@ -134,16 +173,17 @@ class Config:
         }
 
     def start_screen(self):
-        self.__game_screen = pygame.display.set_mode((
+        self.__surface = pygame.display.set_mode((
             self.__monitor_width,
             self.__monitor_height,
         ))
 
     def get_screen(self):
         return {
-            "surface": self.__game_screen,
-            "width": self.__game_screen.get_width(),
-            "height": self.__game_screen.get_height()
+            "surface": self.__surface,
+            "width": self.__surface.get_width(),
+            "height": self.__surface.get_height(),
+            "rect": self.__surface.get_rect()
         }
 
     def clock_tick(self, framerate):
