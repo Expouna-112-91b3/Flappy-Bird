@@ -12,10 +12,10 @@ class Debugger:
         self.__bird = bird
         self.__config = Config()
 
-        self.__game_screen = self.__config.get_screen()
-        self.__surface = self.__game_screen["surface"]
-        self.__screen_width = self.__game_screen["width"]
-        self.__screen_height = self.__game_screen["height"]
+        self.__screen = self.__config.get_screen()
+        self.__surface = self.__screen["surface"]
+        self.__screen_width = self.__screen["width"]
+        self.__screen_height = self.__screen["height"]
 
     def draw_debug(self, pipe_array=None):
         x, y = self.__bird.get_position()

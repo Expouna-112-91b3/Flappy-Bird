@@ -7,10 +7,10 @@ class Pipe:
     def __init__(self):
         self.__config = Config()
 
-        self.__game_screen = self.__config.get_screen()
-        self.__screen = self.__game_screen["surface"]
-        self.__screen_width = self.__game_screen["width"]
-        self.__screen_height = self.__game_screen["height"]
+        self.__screen = self.__config.get_screen()
+        self.__surface = self.__screen["surface"]
+        self.__screen_width = self.__screen["width"]
+        self.__screen_height = self.__screen["height"]
 
         self.__bird = self.__config.get_bird()
         self.__bird_height = self.__bird["height"]
@@ -22,8 +22,8 @@ class Pipe:
 
         self.__space_between_pipes = self.__bird_height * -6
 
-        self.__offset = randint(-self.__screen_height +
-                                self.__pipe["height"] - self.__space_between_pipes, 0)
+        self.__offset = randint(-self.__screen_height + self.__pipe["height"] - self.__space_between_pipes, 0)
+                                
         self.__top_pipe_y = self.__offset
         self.__bottom_pipe_y = self.__offset + \
             self.__pipe["height"] - self.__space_between_pipes
@@ -77,8 +77,8 @@ class Pipe:
         if self.__top_pipe_rect.right < 0:
             self.__is_offscreen = True
 
-        self.__screen.blit(self.__rotated_sprite, self.__top_pipe_rect)
-        self.__screen.blit(self.__sprite, self.__bottom_pipe_rect)
+        self.__surface.blit(self.__rotated_sprite, self.__top_pipe_rect)
+        self.__surface.blit(self.__sprite, self.__bottom_pipe_rect)
 
     def get_is_offscreen(self):
         return self.__is_offscreen

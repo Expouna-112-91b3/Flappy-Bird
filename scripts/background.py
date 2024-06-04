@@ -7,10 +7,10 @@ class Background:
     def __init__(self):
         self.__config = Config()
 
-        self.__game_screen = self.__config.get_screen()
-        self.__surface = self.__game_screen["surface"]
-        self.__screen_height = self.__game_screen["height"]
-        self.__screen_width = self.__game_screen["width"]
+        self.__screen = self.__config.get_screen()
+        self.__surface = self.__screen["surface"]
+        self.__screen_height = self.__screen["height"]
+        self.__screen_width = self.__screen["width"]
 
         self.__ground = self.__config.get_ground()
         self.__ground_sprite = self.__ground["sprite"]
