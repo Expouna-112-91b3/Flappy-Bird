@@ -17,10 +17,10 @@ class Menu():
 
         self.__background = Background()
 
-        self.__font = pygame.font.Font("./fonts/numbers.ttf", 120)
-        self.__outline_font = pygame.font.Font("./fonts/numbers.ttf", 120)
+        self.__font = pygame.font.Font("./fonts/default.ttf", 120)
+        self.__outline_font = pygame.font.Font("./fonts/default.ttf", 120)
 
-        self.__play_button_font = pygame.font.Font("./fonts/numbers.ttf", 32)
+        self.__play_button_font = pygame.font.Font("./fonts/default.ttf", 32)
         self.__play_button_color = 220
         self.__color_direction = .5
     
