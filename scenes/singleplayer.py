@@ -21,17 +21,19 @@ class Singleplayer:
         self.__debugger = Debugger(self.__bird)
         
         """
-        a geracao de pipes funciona da seguinte forma: a cada segundo especificado em
-        generation_delay, um novo pipe é adicionado ao array de pipes;
+        a geracao de pipes funciona da seguinte forma: a cada ms especificado em
+        GENERATE_PIPE_EVENT, um novo pipe é adicionado ao array de pipes;
         dentro do loop do jogo, um for itera esses pipes e desenha cada um
 
         quando um pipe sai do jogo, seu index dentro do array de pipes é inserido na
         variavel pipe_to_delete_index e, se existir, é deletado no inicio do loop do jogo
         """
-        self.__last_generation_time = time()
-        self.__generation_delay = 1
         self.__pipes = []
         self.__pipe_to_delete_index = None
+
+        self.__running = False
+
+        self.__GENERATE_PIPE_EVENT = pygame.USEREVENT + 1
 
     def reset(self):
         self.__config = Config()
@@ -39,12 +41,16 @@ class Singleplayer:
         self.__bird = Bird()
         self.__score = Score()
         self.__debugger = Debugger(self.__bird)
-        self.__last_generation_time = time()
-        self.__generation_delay = 1
+        pygame.time.set_timer(self.__GENERATE_PIPE_EVENT, 0)
         self.__pipes = []
         self.__pipe_to_delete_index = None
+        self.__running = False
 
     def run(self):
+        if not self.__running:
+            pygame.time.set_timer(self.__GENERATE_PIPE_EVENT, 1000)
+            self.__running = True
+
         if self.__pipe_to_delete_index:
             del self.__pipes[self.__pipe_to_delete_index]
             self.__pipe_to_delete_index = None
@@ -52,6 +58,10 @@ class Singleplayer:
         KEYS = pygame.key.get_pressed()
 
         for _ in pygame.event.get():
+            if _.type == self.__GENERATE_PIPE_EVENT:
+                PIPE = Pipe()
+                self.__pipes.append(PIPE)
+
             if KEYS[pygame.K_p]:
                 self.__config.toggle_debug()
 
@@ -62,14 +72,6 @@ class Singleplayer:
             self.__bird.flap()
 
         self.__background.draw_wallpaper()
-        current_time = time()
-        not_in_generation_delay = current_time - \
-            self.__last_generation_time >= self.__generation_delay
-
-        if not_in_generation_delay:
-            self.__last_generation_time = current_time
-            PIPE = Pipe()
-            self.__pipes.append(PIPE)
 
         for i, pipe in enumerate(self.__pipes):
             pipe.draw()
@@ -88,8 +90,8 @@ class Singleplayer:
         if not self.__bird.get_is_alive():
             self.__score.push_score("Jaozin")
             self.__score.reset_score()
-            self.__config.set_scene(Scenes.SCORE_BOARD.value)
             self.reset()
+            self.__config.set_scene(Scenes.SCORE_BOARD.value)
 
         if self.__config.get_is_debugging():
             self.__debugger.draw_debug(self.__pipes)
