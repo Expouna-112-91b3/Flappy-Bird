@@ -43,7 +43,7 @@ class Background:
         arredondado para cima
         """
         loop_size = 0
-        self.__ground_movement_x -= 5
+        self.__ground_movement_x -= 7
         for _ in range(self.__connected_grounds_size):
             self.__surface.blit(
                 self.__ground_sprite,
