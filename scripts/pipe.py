@@ -6,6 +6,7 @@ from scripts.score import Score
 
 from pygame.rect import Rect
 
+
 class Pipe:
     def __init__(self):
         self.__config = Config()
@@ -27,14 +28,18 @@ class Pipe:
         self.__space_between_pipes = self.__bird_height * -5
 
         """
-        implementa um ruído para aumentar a variabildade de altura
+        implementa um ruído para aumentar a variabildade de altura dos gaps
+        entre canos, sendo o valor de variabilidade entre x e 0
+        onde x < 0
+        
         tem randint(0, n) de chance, sendo n a unidade de porcentagem
-
         ex: randint(0, 6) == 60%
+        onde x > 0
         """
         self.__noise = 0 if randint(0, 6) == 0 else randint(-300, 0)
-        self.__offset = randint(-self.__screen_height + self.__pipe["height"] - self.__space_between_pipes - self.__noise, 0)
-                                
+        self.__offset_calc = -self.__screen_height + self.__pipe["height"] - self.__space_between_pipes - self.__noise
+        self.__offset = randint(self.__offset_calc, 0)
+
         self.__top_pipe_y = self.__offset
         self.__bottom_pipe_y = self.__offset + \
             self.__pipe["height"] - self.__space_between_pipes
@@ -44,7 +49,7 @@ class Pipe:
 
         self.__top_pipe_rect: Rect = self.__rotated_sprite.get_rect(
             topleft=(self.__x_pos, self.__top_pipe_y))
-        
+
         self.__bottom_pipe_rect: Rect = self.__sprite.get_rect(
             topleft=(self.__x_pos, self.__bottom_pipe_y))
 
@@ -54,7 +59,7 @@ class Pipe:
         )
 
         self.__is_offscreen = False
-        
+
         self.__bird_flew_past = False
 
         self.__score = Score()
@@ -81,10 +86,8 @@ class Pipe:
                     self.__score.increase()
 
     def draw(self):
-        move_distance = self.__speed
-        self.__top_pipe_rect = self.__top_pipe_rect.move(move_distance, 0)
-        self.__bottom_pipe_rect = self.__bottom_pipe_rect.move(
-            move_distance, 0)
+        self.__top_pipe_rect = self.__top_pipe_rect.move(self.__speed, 0)
+        self.__bottom_pipe_rect = self.__bottom_pipe_rect.move(self.__speed, 0)
 
         # checa se o cano está fora da tela
         if self.__top_pipe_rect.right < 0:
