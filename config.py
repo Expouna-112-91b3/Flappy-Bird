@@ -7,6 +7,8 @@ from screeninfo import get_monitors
 import pygame
 from pygame.image import load
 
+from tools.utils import Utils
+
 from scenes.scenes import Scenes
 
 class Config:
@@ -82,32 +84,31 @@ class Config:
     def close_game(self):
         self.__running = False
 
-    def setup_images(self):
-        # wallpaper
-        self.__wallpaper_sprite = load(
-            './sprites/scenario/background.bmp').convert_alpha()
+    def lc(self, image_path):
+        return load(image_path).convert_alpha()
 
+    def setup_images(self):
+        LCA = Utils.Image.lca
+
+        # wallpaper
+        self.__wallpaper_sprite = LCA('./sprites/scenario/background.bmp')
         self.__scaled_wallper_sprite = pygame.transform.scale(
             self.__wallpaper_sprite,
             (self.__monitor_height, self.__monitor_width)
         )
 
         # ground
-        self.__ground_sprite = load(
-            './sprites/scenario/ground.bmp').convert_alpha()
+        self.__ground_sprite = LCA('./sprites/scenario/ground.bmp')
         self.__ground_sprite_rect = self.__ground_sprite.get_rect()
 
         # pipe
-        self.__pipe_sprite = load('./sprites/pipe/pipe.png').convert_alpha()
+        self.__pipe_sprite = LCA('./sprites/pipe/pipe.png')
         self.__pipe_sprite_rect = self.__pipe_sprite.get_rect()
 
         # bird
-        self.__bird_downflap_sprite = load(
-            './sprites/bird/downflap.bmp').convert_alpha()
-        self.__bird_midflap_sprite = load(
-            './sprites/bird/midflap.bmp').convert_alpha()
-        self.__bird_upflap_sprite = load(
-            './sprites/bird/upflap.bmp').convert_alpha()
+        self.__bird_downflap_sprite = LCA('./sprites/bird/downflap.bmp')
+        self.__bird_midflap_sprite = LCA('./sprites/bird/midflap.bmp')
+        self.__bird_upflap_sprite = LCA('./sprites/bird/upflap.bmp')
         self.__bird_rect = self.__bird_midflap_sprite.get_rect()
 
 

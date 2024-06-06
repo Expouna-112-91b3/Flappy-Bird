@@ -1,26 +1,32 @@
-import pygame
+from enum import Enum
 
-"""
-classe de utilitarios gerais, como
-gerador de texto e dicionario de cores
-"""
-
+from pygame.image import load
 
 class Utils:
-    colors = {
-        "BLACK": (0, 0, 0),
-        "WHITE": (255, 255, 255),
-        "RED": (255, 0, 0),
-        "GREEN": (0, 255, 0),
-        "BLUE": (0, 0, 255)
-    }
+    """
+    classe de utilitarios gerais
+    """
+    class Colors(Enum):
+        """
+        RGB de cores padrão
+        """
+        WHITE = (255, 255, 255)
+        BLACK = (0, 0, 0),
+        GRAY = (155, 155, 155),
+        RED = (255, 0, 0),
+        GREEN = (0, 255, 0),
+        BLUE = (0, 0, 255)
 
-    @staticmethod
-    def init_font():
-        pygame.font.init()
-
-    @staticmethod
-    def draw_debbuger_font(screen, text, color=(0, 0, 0), pos=(0, 0)):
-        font = pygame.font.SysFont('Arial', 30)
-        text_surface = font.render(str(text), False, color)
-        screen.blit(text_surface, pos)
+    class Image():
+        def lca(image_path):
+            """
+            carrega uma imagem especifica e a retorna convertida para alpha
+            """
+            return load(image_path).convert_alpha()
+        
+        def lc(image_path):
+            """
+            carrega uma imagem especifica e a retorna convertida
+            """
+            return load(image_path).convert()
+             
