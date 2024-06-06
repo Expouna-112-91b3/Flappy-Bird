@@ -1,36 +1,32 @@
 import pygame
 
 from scenes.singleplayer import Singleplayer
-from config import Config
-
 from scenes.scenes import Scenes
-
 from scenes.menu import Menu
-
 from scenes.score_board import ScoreBoard
 
-from tools.utils import Utils
+from config import Config
+from score import Score
 
-config = Config()
-config.start_screen()
-config.setup_images()
-Utils.init_font()
+CONFIG = Config()
+CONFIG.start_screen()
+CONFIG.setup_images()
+pygame.font.init()
+
+SCORE = Score()
 
 MENU = Menu()
 SINGLEPLAYER = Singleplayer()
 SCORE_BOARD = ScoreBoard()
 
-config.set_scene(Scenes.SCORE_BOARD.value)
+CONFIG.set_scene(Scenes.MENU.value)
 
-running, paused = config.get_running(), config.get_paused()
+running = CONFIG.get_running()
 while running:
-    if not config.get_running():
+    if not CONFIG.get_running():
         running = False
 
-    if config.get_paused():
-        continue
-
-    match config.get_current_scene():
+    match CONFIG.get_current_scene():
         case Scenes.MENU.value:
             MENU.run()
         case Scenes.SINGLEPLAYER.value:
@@ -41,6 +37,6 @@ while running:
             break
 
     pygame.display.flip()
-    config.clock_tick(60)
+    CONFIG.clock_tick(90)
 
 pygame.quit()
