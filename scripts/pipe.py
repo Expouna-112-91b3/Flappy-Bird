@@ -2,10 +2,14 @@ from random import randint
 
 from config import Config
 
+from score import Score
+
+from pygame.rect import Rect
 
 class Pipe:
     def __init__(self):
         self.__config = Config()
+        self.__score = Score()
 
         self.__screen = self.__config.get_screen()
         self.__surface = self.__screen["surface"]
@@ -20,20 +24,28 @@ class Pipe:
         self.__sprite = self.__pipe["sprite"]["default"]
         self.__rotated_sprite = self.__pipe["sprite"]["rotated"]
 
-        self.__space_between_pipes = self.__bird_height * -6
+        self.__space_between_pipes = self.__bird_height * -5
 
-        self.__offset = randint(-self.__screen_height + self.__pipe["height"] - self.__space_between_pipes, 0)
+        """
+        implementa um ruído para aumentar a variabildade de altura
+        tem randint(0, n) de chance, sendo n a unidade de porcentagem
+
+        ex: randint(0, 6) == 60%
+        """
+        self.__noise = 0 if randint(0, 6) == 0 else randint(-300, 0)
+        self.__offset = randint(-self.__screen_height + self.__pipe["height"] - self.__space_between_pipes - self.__noise, 0)
                                 
         self.__top_pipe_y = self.__offset
         self.__bottom_pipe_y = self.__offset + \
             self.__pipe["height"] - self.__space_between_pipes
 
         self.__x_pos = self.__screen_width
-        self.__speed = -5
+        self.__speed = -7.5
 
-        self.__top_pipe_rect = self.__rotated_sprite.get_rect(
+        self.__top_pipe_rect: Rect = self.__rotated_sprite.get_rect(
             topleft=(self.__x_pos, self.__top_pipe_y))
-        self.__bottom_pipe_rect = self.__sprite.get_rect(
+        
+        self.__bottom_pipe_rect: Rect = self.__sprite.get_rect(
             topleft=(self.__x_pos, self.__bottom_pipe_y))
 
         self.__hitbox = (
@@ -45,7 +57,9 @@ class Pipe:
         
         self.__bird_flew_past = False
 
-    def check_collision(self, bird, score):
+        self.__score = Score()
+
+    def check_collision(self, bird):
         # hitboxes
         # pygame.draw.rect(self.__screen, (255, 0, 0), self.__top_pipe_rect, 1)
         # pygame.draw.rect(self.__screen, (255, 0, 0), self.__bottom_pipe_rect, 1)
@@ -61,11 +75,10 @@ class Pipe:
             # se ele estiver mais alto que a ponta do cano superior ou mais baixo que a ponta do cano inferior, ele morre
             if (bird_x_pos <= self.__hitbox[0] or bird_x_pos >= self.__hitbox[1]):
                 bird.die()
-
-        if not self.__bird_flew_past:
-            if bird_x_pos >= self.__top_pipe_rect.centerx:
-                self.__bird_flew_past = True
-                score.increase()
+            else:
+                if not self.__bird_flew_past:
+                    self.__bird_flew_past = True
+                    self.__score.increase()
 
     def draw(self):
         move_distance = self.__speed
