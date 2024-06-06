@@ -1,6 +1,5 @@
 import pygame
 from config import Config
-from score import Score
 from time import time
 
 from scripts.background import Background
@@ -11,14 +10,14 @@ from scenes.scenes import Scenes
 
 from tools.debugger import Debugger
 
+from score import Score
+
 class Singleplayer:
     def __init__(self):
         self.__config = Config()
-        self.__screen = self.__config.get_screen()["surface"]
-        
-        self.__score = Score(self.__screen)
         self.__background = Background()
         self.__bird = Bird()
+        self.__score = Score()
 
         self.__debugger = Debugger(self.__bird)
         
@@ -31,7 +30,18 @@ class Singleplayer:
         variavel pipe_to_delete_index e, se existir, é deletado no inicio do loop do jogo
         """
         self.__last_generation_time = time()
-        self.__generation_delay = 1.5
+        self.__generation_delay = 1
+        self.__pipes = []
+        self.__pipe_to_delete_index = None
+
+    def reset(self):
+        self.__config = Config()
+        self.__background = Background()
+        self.__bird = Bird()
+        self.__score = Score()
+        self.__debugger = Debugger(self.__bird)
+        self.__last_generation_time = time()
+        self.__generation_delay = 1
         self.__pipes = []
         self.__pipe_to_delete_index = None
 
@@ -42,52 +52,45 @@ class Singleplayer:
 
         KEYS = pygame.key.get_pressed()
 
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if KEYS[pygame.K_PAUSE]:
-                    self.__config.pause()
+        for _ in pygame.event.get():
+            if KEYS[pygame.K_p]:
+                self.__config.toggle_debug()
 
-                if KEYS[pygame.K_p]:
-                    self.__config.toggle_debug()
+            if KEYS[pygame.K_ESCAPE]:
+                self.__config.close_game()
 
-                if not self.__config.get_paused():
-                    if KEYS[pygame.K_w]:
-                        self.__bird.flap()
+        if KEYS[pygame.K_w]:
+            self.__bird.flap()
 
-        if KEYS[pygame.K_ESCAPE]:
-            self.__config.close_game()
+        self.__background.draw_wallpaper()
+        current_time = time()
+        not_in_generation_delay = current_time - \
+            self.__last_generation_time >= self.__generation_delay
 
-        if not self.__config.get_paused():
-            if KEYS[pygame.K_w]:
-                self.__bird.flap()
+        if not_in_generation_delay:
+            self.__last_generation_time = current_time
+            PIPE = Pipe()
+            self.__pipes.append(PIPE)
 
-            self.__background.draw_wallpaper()
-            current_time = time()
-            not_in_generation_delay = current_time - \
-               self.__last_generation_time >= self.__generation_delay
+        for i, pipe in enumerate(self.__pipes):
+            pipe.draw()
+            pipe.check_collision(self.__bird)
+            if pipe.get_is_offscreen():
+                self.__pipe_to_delete_index = i
 
-            if not_in_generation_delay:
-                self.__last_generation_time = current_time
-                PIPE = Pipe()
-                self.__pipes.append(PIPE)
+        self.__background.draw_ground()
 
-            for i, pipe in enumerate(self.__pipes):
-                pipe.draw()
-                pipe.check_collision(self.__bird, self.__score)
-                if pipe.get_is_offscreen():
-                    self.__pipe_to_delete_index = i
+        self.__bird.draw()
+        self.__bird.apply_gravity()
+        self.__bird.change_sprite()
 
-            self.__background.draw_ground()
+        self.__score.draw()
 
-            self.__bird.draw()
-            self.__bird.apply_gravity()
-            self.__bird.change_sprite()
+        if not self.__bird.get_is_alive():
+            self.__score.push_score("Jaozin")
+            self.__score.reset_score()
+            self.__config.set_scene(Scenes.SCORE_BOARD.value)
+            self.reset()
 
-            self.__score.draw()
-
-            if not self.__bird.get_is_alive():
-                self.__config.set_scene(Scenes.SCORE_BOARD.value)
-                self.__config.pause()
-
-            if self.__config.get_is_debugging():
-                self.__debugger.draw_debug(self.__pipes)
+        if self.__config.get_is_debugging():
+            self.__debugger.draw_debug(self.__pipes)
