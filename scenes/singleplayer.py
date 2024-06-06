@@ -5,12 +5,11 @@ from time import time
 from scripts.background import Background
 from scripts.bird import Bird
 from scripts.pipe import Pipe
+from scripts.score import Score
 
 from scenes.scenes import Scenes
 
 from tools.debugger import Debugger
-
-from score import Score
 
 class Singleplayer:
     def __init__(self):

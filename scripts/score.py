@@ -20,7 +20,7 @@ class Score:
             self.__surface: Surface = self.__config.get_screen()["surface"]
             self.__pos = (self.__surface.get_width() / 2, 50)
             self.__score = 0
-            self.__font = Font("./fonts/numbers.ttf", 30)
+            self.__font = Font("./fonts/default.ttf", 30)
 
             self.__current_score = 0
             self.__scores = []

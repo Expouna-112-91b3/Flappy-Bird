@@ -2,7 +2,7 @@ from random import randint
 
 from config import Config
 
-from score import Score
+from scripts.score import Score
 
 from pygame.rect import Rect
 

@@ -1,8 +1,8 @@
-from scripts.background import Background
-
 import pygame
 
 from config import Config
+
+from scripts.background import Background
 
 from scenes.scenes import Scenes
 
