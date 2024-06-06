@@ -10,11 +10,6 @@ from pygame.image import load
 from scenes.scenes import Scenes
 
 class Config:
-
-    """
-    as variaveis _instance, _initialized e o metodo __new__
-    configuram a classe como um singleton
-    """
     _instance = None
     _initialized = False
 
@@ -61,7 +56,6 @@ class Config:
             self.__surface = None
             
             # game status
-            self.__paused = False
             self.__running = True
             self.__current_scene = Scenes.MENU.value
             self.__scores = []
@@ -82,16 +76,6 @@ class Config:
     def set_scene(self, scene: int):
         self.__current_scene = scene
 
-    def get_paused(self):
-        return self.__paused
-
-    def toggle_paused(self):
-        self.__paused = not self.__paused
-        return self.__paused
-    
-    def pause(self):
-        self.__paused = True
-    
     def get_running(self):
         return self.__running
     
@@ -176,7 +160,7 @@ class Config:
         self.__surface = pygame.display.set_mode((
             self.__monitor_width,
             self.__monitor_height,
-        ))
+        ), vsync=1)
 
     def get_screen(self):
         return {
