@@ -1,13 +1,13 @@
 from tools.utils import Utils
 from config import Config
 
-"""
-classe que mostra e gerencia a interface
-de debug
-"""
-
+from pygame.font import SysFont
 
 class Debugger:
+    """
+    classe que mostra e gerencia a interface
+    de debug
+    """
     def __init__(self, bird):
         self.__bird = bird
         self.__config = Config()
@@ -16,6 +16,8 @@ class Debugger:
         self.__surface = self.__screen["surface"]
         self.__screen_width = self.__screen["width"]
         self.__screen_height = self.__screen["height"]
+
+        self.__font = SysFont('Arial', 30)
 
     def draw_debug(self, pipe_array=None):
         x, y = self.__bird.get_position()
@@ -33,17 +35,17 @@ class Debugger:
 
         distance = 0
         for label in list(configs):
-            Utils.draw_debbuger_font(
-                self.__surface,
+            text_surface = self.__font.render(
                 f"{label}",
-                pos=(0, distance)
-            )
+                False,
+                Utils.Colors.BLACK.value)
+            self.__surface.blit(text_surface, (0, distance))
             distance += 30
 
             for value in list(configs[label]):
-                Utils.draw_debbuger_font(
-                    self.__surface,
+                text_surface = self.__font.render(
                     f"{value}: {configs[label][value]}",
-                    pos=(20, distance)
-                )
+                    False,
+                    Utils.Colors.BLACK.value)
+                self.__surface.blit(text_surface, (20, distance))
                 distance += 30
