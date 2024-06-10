@@ -54,6 +54,12 @@ class Config:
             self.__bird_upflap_sprite = None
             self.__bird_rect = None
 
+            # coin
+            self.__front_sprite = None
+            self.__side_sprite = None
+            self.__25deg_sprite = None
+            self.__76deg_sprite = None
+
             # GAME screen
             self.__surface = None
             
@@ -111,6 +117,12 @@ class Config:
         self.__bird_upflap_sprite = LCA('./sprites/bird/upflap.bmp')
         self.__bird_rect = self.__bird_midflap_sprite.get_rect()
 
+        # coin
+        self.__front_sprite = LCA("./sprites/coin/front.png")
+        self.__side_sprite = LCA("./sprites/coin/side.png")
+        self.__25deg_sprite = LCA("./sprites/coin/25deg.png")
+        self.__76deg_sprite = LCA("./sprites/coin/75deg.png")
+        self.__coin_rect = self.__front_sprite.get_rect()
 
     def get_monitor(self):
         return {
@@ -155,6 +167,18 @@ class Config:
             },
             "width": self.__bird_rect.width,
             "height": self.__bird_rect.height
+        }
+    
+    def get_coin(self):
+        return {
+            "sprites": {
+                "front": self.__front_sprite,
+                "side": self.__side_sprite,
+                "25deg": self.__25deg_sprite,
+                "75deg": self.__76deg_sprite
+            },
+            "width": self.__coin_rect.width,
+            "height": self.__coin_rect.height
         }
 
     def start_screen(self):
