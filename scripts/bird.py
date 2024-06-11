@@ -58,7 +58,7 @@ class Bird:
         if not self.__alive:
             rotation = 180
         else:
-            rotation = self.__acceleration * 3
+            rotation = self.__acceleration * 0.5
 
         rotated_sprite = pygame.transform.rotate(
             self.__sprites[self.__current_sprite_index],
@@ -119,7 +119,7 @@ class Bird:
                     self.__desired_height = None
                     return
 
-                self.__current_sprite_rect = self.__current_sprite_rect.move(0, self.__flap_height / 1.5)
+                self.__current_sprite_rect = self.__current_sprite_rect.move(0, ((self.__flap_height * 80) * self.__config.get_dt()) / 1.5)
                 self.__acceleration += .1
                 return
 
@@ -137,4 +137,4 @@ class Bird:
             return
 
         self.__acceleration -= .1
-        self.__current_sprite_rect = self.__current_sprite_rect.move(0, self.__gravity_force)
+        self.__current_sprite_rect = self.__current_sprite_rect.move(0, (self.__gravity_force * 100) * self.__config.get_dt())

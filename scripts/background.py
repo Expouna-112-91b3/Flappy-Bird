@@ -18,8 +18,7 @@ class Background:
         self.__ground_height = self.__ground["height"]
         self.__ground_y = self.__screen_height - self.__ground_height
 
-        self.__wallpaper_sprite = self.__config.get_wallpaper()[
-            "sprite"]["scaled"]
+        self.__wallpaper_sprite = self.__config.get_wallpaper()["sprite"]["scaled"]
         self.__wallpper_y = -self.__ground_height * 5
 
         self.__connected_grounds_size = math.ceil(
@@ -43,12 +42,11 @@ class Background:
         arredondado para cima
         """
         loop_size = 0
-        self.__ground_movement_x -= 7
+        self.__ground_movement_x -= 20
         for _ in range(self.__connected_grounds_size):
             self.__surface.blit(
                 self.__ground_sprite,
-                (loop_size + self.__ground_movement_x, self.__ground_y),
-            )
+                (loop_size + self.__ground_movement_x, self.__ground_y)),
             loop_size = loop_size + self.__ground_width
 
     def draw_wallpaper(self):

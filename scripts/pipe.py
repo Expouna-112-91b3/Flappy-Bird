@@ -10,8 +10,6 @@ from pygame.rect import Rect
 class Pipe:
     def __init__(self):
         self.__config = Config()
-        self.__score = Score()
-
         self.__screen = self.__config.get_screen()
         self.__surface = self.__screen["surface"]
         self.__screen_width = self.__screen["width"]
@@ -32,7 +30,7 @@ class Pipe:
             self.__pipe["height"] - self.__space_between_pipes
 
         self.__x_pos = self.__screen_width
-        self.__speed = -7.5
+        self.__speed = -600
 
         self.__top_pipe_rect: Rect = self.__rotated_sprite.get_rect(
             topleft=(self.__x_pos, self.__top_pipe_y))
@@ -42,8 +40,6 @@ class Pipe:
 
         self.__offscreen = False
         self.__bird_flew_past = False
-
-        self.__score = Score()
 
     def check_collision(self, bird):
         bird_rect = bird.get_current_sprite_rect()
@@ -62,8 +58,8 @@ class Pipe:
                 return True
 
     def draw(self):
-        self.__top_pipe_rect = self.__top_pipe_rect.move(self.__speed, 0)
-        self.__bottom_pipe_rect = self.__bottom_pipe_rect.move(self.__speed, 0)
+        self.__top_pipe_rect = self.__top_pipe_rect.move(self.__speed * self.__config.get_dt(), 0)
+        self.__bottom_pipe_rect = self.__bottom_pipe_rect.move(self.__speed * self.__config.get_dt(), 0)
 
         if self.__top_pipe_rect.right < 0:
             self.__offscreen = True

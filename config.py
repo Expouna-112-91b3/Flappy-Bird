@@ -11,6 +11,7 @@ from tools.utils import Utils
 
 from scenes.scenes import Scenes
 
+
 class Config:
     _instance = None
     _initialized = False
@@ -62,15 +63,16 @@ class Config:
 
             # GAME screen
             self.__surface = None
-            
+
             # game status
             self.__running = True
             self.__current_scene = Scenes.MENU.value
             self.__scores = []
+            self.dt = 0
 
     def get_scores(self):
         return self.__scores
-    
+
     def push_score(self, score):
         for i, user_score in enumerate(self.__scores):
             if score[1] >= user_score[1]:
@@ -80,13 +82,13 @@ class Config:
 
     def get_current_scene(self):
         return self.__current_scene
-    
+
     def set_scene(self, scene: int):
         self.__current_scene = scene
 
     def get_running(self):
         return self.__running
-    
+
     def close_game(self):
         self.__running = False
 
@@ -168,7 +170,7 @@ class Config:
             "width": self.__bird_rect.width,
             "height": self.__bird_rect.height
         }
-    
+
     def get_coin(self):
         return {
             "sprites": {
@@ -209,3 +211,9 @@ class Config:
 
     def toggle_debug(self):
         self.__debug_mode = not self.__debug_mode
+
+    def set_dt(self, x):
+        self.dt = x
+
+    def get_dt(self):
+        return self.dt

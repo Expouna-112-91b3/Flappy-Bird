@@ -34,7 +34,7 @@ class Coin():
             self.__coin_sprites["75deg"],
         ]
 
-        self.__speed = -7.5
+        self.__speed = -600
 
         self.__rect = self.__sprites[self.__current_sprite_index].get_rect(
             topleft=(self.__screen_width + self.__screen_offset, randint(0, self.__screen_height - self.__height - self.__ground_height))
@@ -46,7 +46,7 @@ class Coin():
     def set_collected(self): self.__collected = True
 
     def draw(self):
-        self.__rect = self.__rect.move(self.__speed, 0)
+        self.__rect = self.__rect.move(self.__speed * self.__config.get_dt(), 0)
 
         self.__surface.blit(
             self.__sprites[self.__current_sprite_index], self.__rect)

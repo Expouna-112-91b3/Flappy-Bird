@@ -34,6 +34,7 @@ while running:
             break
 
     pygame.display.flip()
-    CONFIG.clock_tick(90)
+    dt = CONFIG.clock_tick(30) / 1000
+    CONFIG.set_dt(dt)
 
 pygame.quit()
