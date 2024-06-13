@@ -63,7 +63,7 @@ class Singleplayer:
 
         self.__running = False
 
-    def run(self, q):
+    def run(self):
         if not self.__running:
             pygame.time.set_timer(self.__GENERATE_PIPE_EVENT, 1000)
             self.__running = True
@@ -138,10 +138,17 @@ class Singleplayer:
         if self.__config.get_is_debugging():
             self.__debugger.draw_debug(self.__pipes)
 
-        hand_movi = q.get()
+    def hand_movement(self, q):
 
-        if hand_movi:
+        hand_mov = ""
+
+        if q.empty() == False:
+            hand_mov = q.get()
+
+        if hand_mov:
             if self.__hand_last_seen:
-                direction = hand_movi - self.__hand_last_seen
+                direction = hand_mov - self.__hand_last_seen
+
+                self.__bird.hand_movement(direction)
             else:
-                self.__hand_last_seen = hand_movi
+                self.__hand_last_seen = hand_mov

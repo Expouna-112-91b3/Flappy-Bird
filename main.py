@@ -40,7 +40,9 @@ def flappy_game(q):
             case Scenes.MENU.value:
                 MENU.run()
             case Scenes.SINGLEPLAYER.value:
-                SINGLEPLAYER.run(q)
+                SINGLEPLAYER.run()
+                SINGLEPLAYER.hand_movement(q)
+                
             case Scenes.SCORE_BOARD.value:
                 SCORE_BOARD.run()
             case __:
@@ -54,10 +56,11 @@ def flappy_game(q):
 
 def hand_idf(q):
 
+    cap = cv2.VideoCapture(1)
+
     with mp_hands.Hands(min_detection_confidence = 0.5, min_tracking_confidence=0.5, max_num_hands=1, static_image_mode= False) as hands:
 
         while True:
-            cap = cv2.VideoCapture(1)
             ret, frame = cap.read()
             cv2.waitKey(1)
             
@@ -77,7 +80,7 @@ def hand_idf(q):
                         cx, cy = int(coord.x*w), int(coord.y*h)
                         pontos.append((cx,cy))
             
-            #cv2.imshow("Hand Tracking", image) # Exibe a janela da camera
+            cv2.imshow("Hand Tracking", image) # Exibe a janela da camera
 
             if pontos:
                 q.put(np.mean([i[1] for i in pontos]))
