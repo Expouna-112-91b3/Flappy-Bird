@@ -40,6 +40,7 @@ class Bird:
         self.__flap_height = -self.__gravity_force * 2.5
         self.__acceleration = 0
 
+
     def get_acceleration(self): return self.__acceleration
     def get_position(self): return (self.__current_sprite_rect.x, self.__current_sprite_rect.y)
     def get_is_alive(self): return self.__alive
@@ -138,3 +139,13 @@ class Bird:
 
         self.__acceleration -= .1
         self.__current_sprite_rect = self.__current_sprite_rect.move(0, self.__gravity_force)
+
+    def hand_movement(self, direction):
+
+        if direction > 0:
+                
+            self.__y += direction
+            
+        else:
+
+            self.__y -= direction

@@ -1,30 +1,28 @@
 from tools.utils import Utils
 from config import Config
 
-from pygame.font import SysFont
+"""
+classe que mostra e gerencia a interface
+de debug
+"""
+
 
 class Debugger:
-    """
-    classe que mostra e gerencia a interface
-    de debug
-    """
     def __init__(self, bird):
         self.__bird = bird
         self.__config = Config()
 
-        self.__screen = self.__config.get_screen()
-        self.__surface = self.__screen["surface"]
-        self.__screen_width = self.__screen["width"]
-        self.__screen_height = self.__screen["height"]
-
-        self.__font = SysFont('Arial', 30)
+        self.__game_screen = self.__config.get_screen()
+        self.__surface = self.__game_screen["surface"]
+        self.__screen_width = self.__game_screen["width"]
+        self.__screen_height = self.__game_screen["height"]
 
     def draw_debug(self, pipe_array=None):
         x, y = self.__bird.get_position()
         configs = {
             "Passaro": {
                 "aceleracao": "{:.2f}".format(self.__bird.get_acceleration()),
-                "posicao": f'{"{:.0f}".format(y)}x {"{:.0f}".format(x)}y',
+                "posicao": f'{"{:.0f}".format(x)}x {"{:.0f}".format(y)}y',
             },
             "Tela": {
                 "dimensoes": f"{self.__screen_height} x {self.__screen_width}",
@@ -35,17 +33,17 @@ class Debugger:
 
         distance = 0
         for label in list(configs):
-            text_surface = self.__font.render(
+            Utils.draw_font(
+                self.__surface,
                 f"{label}",
-                False,
-                Utils.Colors.BLACK.value)
-            self.__surface.blit(text_surface, (0, distance))
+                pos=(0, distance)
+            )
             distance += 30
 
             for value in list(configs[label]):
-                text_surface = self.__font.render(
+                Utils.draw_font(
+                    self.__surface,
                     f"{value}: {configs[label][value]}",
-                    False,
-                    Utils.Colors.BLACK.value)
-                self.__surface.blit(text_surface, (20, distance))
+                    pos=(20, distance)
+                )
                 distance += 30
