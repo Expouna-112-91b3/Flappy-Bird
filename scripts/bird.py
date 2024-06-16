@@ -28,7 +28,8 @@ class Bird:
         ]
 
         self.__current_sprite_index = 0
-        self.__current_sprite_rect = self.__sprites[self.__current_sprite_index].get_rect(center=(self.__x, self.__y))
+        self.__current_sprite_rect = self.__sprites[self.__current_sprite_index].get_rect(
+            center=(self.__x, self.__y))
 
         self.__last_sprite_change_time = time()
         self.__sprite_change_delay = .05
@@ -41,9 +42,10 @@ class Bird:
         self.__flap_height = -self.__gravity_force * 2.5
         self.__acceleration = 0
 
-
     def get_acceleration(self): return self.__acceleration
-    def get_position(self): return (self.__current_sprite_rect.x, self.__current_sprite_rect.y)
+    def get_position(self): return (
+        self.__current_sprite_rect.x, self.__current_sprite_rect.y)
+
     def get_is_alive(self): return self.__alive
 
     def get_current_sprite_rect(self):
@@ -77,10 +79,12 @@ class Bird:
             return
 
         current_time = time()
-        in_sprite_change_delay = current_time - self.__last_sprite_change_time < self.__sprite_change_delay
+        in_sprite_change_delay = current_time - \
+            self.__last_sprite_change_time < self.__sprite_change_delay
 
         if not in_sprite_change_delay:
-            self.__current_sprite_index = (self.__current_sprite_index + 1) % len(self.__sprites)
+            self.__current_sprite_index = (
+                self.__current_sprite_index + 1) % len(self.__sprites)
             self.sprite = self.__sprites[self.__current_sprite_index]
             self.__last_sprite_change_time = current_time
 
@@ -121,7 +125,8 @@ class Bird:
                     self.__desired_height = None
                     return
 
-                self.__current_sprite_rect = self.__current_sprite_rect.move(0, ((self.__flap_height * 80) * self.__config.get_dt()) / 1.5)
+                self.__current_sprite_rect = self.__current_sprite_rect.move(
+                    0, ((self.__flap_height * 80) * self.__config.get_dt()) / 1.5)
                 self.__acceleration += .1
                 return
 
@@ -139,15 +144,9 @@ class Bird:
             return
 
         self.__acceleration -= .1
-        self.__current_sprite_rect = self.__current_sprite_rect.move(0, self.__gravity_force)
+        self.__current_sprite_rect = self.__current_sprite_rect.move(
+            0, self.__gravity_force)
 
     def hand_movement(self, direction):
-
-        if direction > 0:
-            
-            print(f"{direction}, >")
-            self.__current_sprite_rect = self.__current_sprite_rect.move(0, direction / 10)
-            
-        else:
-            print(f"{direction}, <")
-            self.__current_sprite_rect = self.__current_sprite_rect.move(0, direction / 10)
+        pos = (0, direction / 10)
+        self.__current_sprite_rect = self.__current_sprite_rect.move(pos)

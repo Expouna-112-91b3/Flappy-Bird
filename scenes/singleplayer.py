@@ -16,20 +16,24 @@ from random import random
 
 from tools.utils import Utils
 
+
 class Singleplayer:
     def __init__(self):
         self.__config = Config()
+        
+        self.__screen_height = self.__config.get_screen()["height"]
+        
         self.__background = Background()
         self.__bird = Bird()
         self.__score = Score()
 
         self.__debugger = Debugger(self.__bird)
-        
+
         """
         a geracao de pipes e coins funciona da seguinte forma: a cada ms especificado em
         GENERATE_PIPE_EVENT, um novo pipe é adicionado ao array de pipes;
         dentro do loop do jogo, um for itera esses pipes e desenha cada um
-        há uma chance de 10% de a criação de pipe gerar uma moeda
+        há uma chance de n% de a criação de pipe gerar uma moeda
 
         quando um pipe e/ou moeda sai do jogo, seu(s) index(es) dentro do array de seu(s) array(s) 
         é inserido na variavel (entidade)_to_delete_index e, se existir, é deletado no inicio do loop do jogo
@@ -39,15 +43,13 @@ class Singleplayer:
 
         self.__coins = []
         self.__coin_to_delete_index = None
-        self.__coin_event_count = 0
 
         self.__running = False
 
         self.__GENERATE_PIPE_EVENT = pygame.USEREVENT + 1
 
         self.__hand_last_seen = None
-
-        self.__hand_last_seen = None
+        self.__hand_last_pos = None
 
     def reset(self):
         self.__config = Config()
@@ -84,7 +86,7 @@ class Singleplayer:
             if _.type == self.__GENERATE_PIPE_EVENT:
                 PIPE = Pipe()
                 self.__pipes.append(PIPE)
-            
+
                 if Utils.Chances.random_chance(0.2):
                     COIN = Coin(300)
                     self.__coins.append(COIN)
@@ -103,8 +105,8 @@ class Singleplayer:
         for i, pipe in enumerate(self.__pipes):
             pipe.draw()
 
-            if pipe.check_collision(self.__bird):
-                self.__bird.die()
+            #if pipe.check_collision(self.__bird):
+            #    self.__bird.die()
 
             if pipe.check_flew_past(self.__bird):
                 self.__score.increase()
@@ -116,29 +118,26 @@ class Singleplayer:
             coin.draw()
             coin.change_sprite()
             if (coin.check_colision(self.__bird.get_current_sprite_rect())
-                and not coin.get_collected()):
+                    and not coin.get_collected()):
                 coin.set_collected()
                 self.__score.increase()
-            
+
             if coin.get_collected():
                 self.__coin_to_delete_index = i
 
         self.__background.draw_ground()
 
         self.__bird.draw()
-        #self.__bird.apply_gravity()
+        # self.__bird.apply_gravity()
         self.__bird.change_sprite()
 
         self.__score.draw()
-        
+
         if not self.__bird.get_is_alive():
             self.__score.push_score("Jaozin")
             self.__score.reset_score()
             self.reset()
             self.__config.set_scene(Scenes.SCORE_BOARD.value)
-
-        if self.__config.get_is_debugging():
-            self.__debugger.draw_debug(self.__pipes)
 
         hand_mov = ""
 
@@ -146,9 +145,14 @@ class Singleplayer:
             hand_mov = q.get()
 
         if hand_mov:
+            self.__hand_last_pos = hand_mov
+            
             if self.__hand_last_seen:
                 direction = hand_mov - self.__hand_last_seen
-
                 self.__bird.hand_movement(direction)
             else:
                 self.__hand_last_seen = hand_mov
+
+        if self.__config.get_is_debugging():
+            hand_pos = hand_mov if hand_mov else self.__hand_last_pos
+            self.__debugger.draw(self.__pipes, hand_pos)

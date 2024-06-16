@@ -28,9 +28,7 @@ def game(q):
     CONFIG.set_scene(Scenes.MENU.value)
 
     running = CONFIG.get_running()
-
     while running:
-
         if not CONFIG.get_running():
             running = False
 
@@ -49,7 +47,7 @@ def game(q):
     pygame.quit()
 
 def hand_detection(q):
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
     with mp_hands.Hands(min_detection_confidence = 0.5, 
                         min_tracking_confidence=0.5, 
                         max_num_hands=1, 

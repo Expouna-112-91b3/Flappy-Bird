@@ -3,11 +3,13 @@ from config import Config
 
 from pygame.font import SysFont
 
+
 class Debugger:
     """
     classe que mostra e gerencia a interface
     de debug
     """
+
     def __init__(self, bird):
         self.__bird = bird
         self.__config = Config()
@@ -19,8 +21,8 @@ class Debugger:
 
         self.__font = SysFont('Arial', 30)
 
-    def draw_debug(self, pipe_array=None):
-        x, y = self.__bird.get_position()
+    def draw(self, pipe_array=None, hand_move=""):
+        y, x = self.__bird.get_position()
         configs = {
             "Passaro": {
                 "aceleracao": "{:.2f}".format(self.__bird.get_acceleration()),
@@ -31,6 +33,9 @@ class Debugger:
                 "quantidade de canos": len(pipe_array) if pipe_array else 0,
                 "fps": "{:.0f}".format(self.__config.get_fps())
             },
+            "Mao": {
+                "posicao": f"{hand_move}"
+            }
         }
 
         distance = 0
