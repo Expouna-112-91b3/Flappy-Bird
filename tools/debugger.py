@@ -24,7 +24,7 @@ class Debugger:
         configs = {
             "Passaro": {
                 "aceleracao": "{:.2f}".format(self.__bird.get_acceleration()),
-                "posicao": f"{"{:.0f}".format(y)}x {"{:.0f}".format(x)}y",
+                "posicao": f'{"{:.0f}".format(y)}x {"{:.0f}".format(x)}y',
             },
             "Tela": {
                 "dimensoes": f"{self.__screen_height} x {self.__screen_width}",
