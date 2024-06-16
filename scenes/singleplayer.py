@@ -23,6 +23,11 @@ class Singleplayer:
         
         self.__screen_height = self.__config.get_screen()["height"]
         
+        self.__ground = self.__config.get_ground()
+        self.__ground_height = self.__ground["height"]
+        self.__total_ground_height = self.__screen_height - \
+            self.__ground_height
+        
         self.__background = Background()
         self.__bird = Bird()
         self.__score = Score()
@@ -128,7 +133,10 @@ class Singleplayer:
         self.__background.draw_ground()
 
         self.__bird.draw()
-        # self.__bird.apply_gravity()
+        
+        if self.__bird.get_current_sprite_rect().bottom >= self.__total_ground_height:
+            self.__bird.die()
+    
         self.__bird.change_sprite()
 
         self.__score.draw()
@@ -139,20 +147,20 @@ class Singleplayer:
             self.reset()
             self.__config.set_scene(Scenes.SCORE_BOARD.value)
 
-        hand_mov = ""
+        hand_pos = 0
 
         if q.empty() == False:
-            hand_mov = q.get()
+            hand_pos = q.get()
 
-        if hand_mov:
-            self.__hand_last_pos = hand_mov
+        if hand_pos:
+            self.__hand_last_pos = hand_pos
             
             if self.__hand_last_seen:
-                direction = hand_mov - self.__hand_last_seen
-                self.__bird.hand_movement(direction)
+                direction = hand_pos - self.__hand_last_seen
+                self.__bird.hand_movement(direction if self.__bird.get_position()[1] >= 0 else direction + 100)
             else:
-                self.__hand_last_seen = hand_mov
+                self.__hand_last_seen = hand_pos
 
         if self.__config.get_is_debugging():
-            hand_pos = hand_mov if hand_mov else self.__hand_last_pos
-            self.__debugger.draw(self.__pipes, hand_pos)
+            hand_pos = hand_pos if hand_pos else self.__hand_last_pos
+            self.__debugger.draw(self.__pipes, f"{hand_pos}")

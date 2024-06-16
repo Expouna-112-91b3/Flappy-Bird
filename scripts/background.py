@@ -1,6 +1,7 @@
 import math
 
 from config import Config
+from pygame import Rect
 
 
 class Background:
@@ -48,7 +49,7 @@ class Background:
                 self.__ground_sprite,
                 (loop_size + self.__ground_movement_x, self.__ground_y)),
             loop_size = loop_size + self.__ground_width
-
+            
     def draw_wallpaper(self):
         self.__surface.blit(self.__wallpaper_sprite, (0, self.__wallpper_y))
         self.__surface.blit(self.__wallpaper_sprite,
