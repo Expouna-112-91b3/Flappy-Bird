@@ -47,6 +47,8 @@ class Singleplayer:
 
         self.__hand_last_seen = None
 
+        self.__hand_last_seen = None
+
     def reset(self):
         self.__config = Config()
         self.__background = Background()
@@ -124,20 +126,6 @@ class Singleplayer:
         self.__background.draw_ground()
 
         self.__bird.draw()
-
-        hand_mov = ""
-
-        if q.empty() == False:
-            hand_mov = q.get()
-
-        if hand_mov:
-            if self.__hand_last_seen:
-                direction = hand_mov - self.__hand_last_seen
-
-                self.__bird.hand_movement(direction)
-            else:
-                self.__hand_last_seen = hand_mov
-
         #self.__bird.apply_gravity()
         self.__bird.change_sprite()
 
@@ -151,3 +139,16 @@ class Singleplayer:
 
         if self.__config.get_is_debugging():
             self.__debugger.draw_debug(self.__pipes)
+
+        hand_mov = ""
+
+        if q.empty() == False:
+            hand_mov = q.get()
+
+        if hand_mov:
+            if self.__hand_last_seen:
+                direction = hand_mov - self.__hand_last_seen
+
+                self.__bird.hand_movement(direction)
+            else:
+                self.__hand_last_seen = hand_mov

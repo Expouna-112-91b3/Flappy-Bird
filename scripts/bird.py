@@ -18,6 +18,7 @@ class Bird:
         self.__total_ground_height = self.__user_screen["height"] - \
             self.__ground_height
         self.__y = 400
+        self.__y = 400
 
         self.__bird_sprites = self.__config.get_bird()["sprites"]
         self.__sprites = [
@@ -141,7 +142,9 @@ class Bird:
         self.__current_sprite_rect = self.__current_sprite_rect.move(0, self.__gravity_force)
 
     def hand_movement(self, direction):
+
         if direction > 0:
+            
             print(f"{direction}, >")
             self.__current_sprite_rect = self.__current_sprite_rect.move(0, direction / 10)
             
