@@ -22,7 +22,6 @@ class Score:
             self.__config = Config()
             self.__surface: Surface = self.__config.get_screen()["surface"]
             self.__pos = (self.__surface.get_width() / 2, 50)
-            self.__score = 0
             self.__font = Font("./fonts/default.ttf", 55)
 
             self.__current_score = 0
@@ -40,7 +39,7 @@ class Score:
         return self.__scores
 
     def get_score(self):
-        return self.__score
+        return self.__current_score
 
     def sort_score(self):
         self.__scores.sort(key=lambda x: x[1], reverse=True)

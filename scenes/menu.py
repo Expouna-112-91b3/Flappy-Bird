@@ -26,7 +26,7 @@ class Menu():
         self.__play_button_color = 220
         self.__color_direction = .5
 
-        self.__playername = ""
+        self.__playername = self.__config.get_playername()
 
     def run(self):
         KEYS = pygame.key.get_pressed()

@@ -50,7 +50,7 @@ class ScoreBoard():
                 self.__config.close_game()
 
             if KEYS[pygame.K_r]:
-                self.__config.set_scene(Scenes.SINGLEPLAYER.value)
+                self.__config.set_scene(Scenes.MENU.value)
 
         self.__background.draw_wallpaper()
         self.__background.draw_ground()
