@@ -15,7 +15,8 @@ import numpy as np
 
 import multiprocessing as multip
 
-def game(q):
+
+def game():
     CONFIG = Config()
     CONFIG.start_screen()
     CONFIG.setup_images()
@@ -46,16 +47,17 @@ def game(q):
         CONFIG.clock_tick(90)
     pygame.quit()
 
+
 def hand_detection(q):
     cap = cv2.VideoCapture(0)
-    with mp_hands.Hands(min_detection_confidence = 0.5, 
-                        min_tracking_confidence=0.5, 
-                        max_num_hands=1, 
-                        static_image_mode= False) as hands:
+    with mp_hands.Hands(min_detection_confidence=0.5,
+                        min_tracking_confidence=0.5,
+                        max_num_hands=1,
+                        static_image_mode=False) as hands:
         while True:
             _, frame = cap.read()
             cv2.waitKey(1)
-            
+
             image = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
             image.flags.writeable = False
 
@@ -66,14 +68,15 @@ def hand_detection(q):
                 for _, landmarks in enumerate(results.multi_hand_landmarks):
                     for _, coord in enumerate(landmarks.landmark):
                         cx, cy = int(coord.x*w), int(coord.y*h)
-                        pontos.append((cx,cy))
-            
-            cv2.imshow("Hand Tracking", image) # Exibe a janela da camera
+                        pontos.append((cx, cy))
+
+            cv2.imshow("Hand Tracking", image)
 
             if pontos:
                 q.put(np.mean([i[1] for i in pontos]))
             else:
                 q.put("")
+
 
 def main():
     q = multip.Queue()
@@ -85,4 +88,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    game()

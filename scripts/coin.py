@@ -52,10 +52,7 @@ class Coin():
             self.__sprites[self.__current_sprite_index], self.__rect)
 
     def check_colision(self, bird_rect):
-        has_collide = Rect.colliderect(self.__rect, bird_rect)
-        
-        if has_collide:
-            return True
+        return Rect.colliderect(self.__rect, bird_rect)
 
     def change_sprite(self):
         current_time = time()

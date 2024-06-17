@@ -69,6 +69,16 @@ class Config:
             self.__current_scene = Scenes.MENU.value
             self.__scores = []
             self.dt = 0
+            self.__playername = ""
+
+    def set_playername(self, name):
+        self.__playername = name
+
+    def get_playername(self):
+        return self.__playername
+    
+    def reset_playername(self):
+        self.__playername = ""
 
     def get_scores(self):
         return self.__scores

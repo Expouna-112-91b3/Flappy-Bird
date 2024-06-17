@@ -142,8 +142,11 @@ class Singleplayer:
         self.__score.draw()
 
         if not self.__bird.get_is_alive():
-            self.__score.push_score("Jaozin")
-            self.__score.reset_score()
+            if self.__score.get_score() != 0:
+                self.__score.push_score(self.__config.get_playername())
+                self.__score.reset_score()
+
+            self.__config.reset_playername()
             self.reset()
             self.__config.set_scene(Scenes.SCORE_BOARD.value)
 
