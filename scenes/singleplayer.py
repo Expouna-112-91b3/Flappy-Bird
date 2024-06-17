@@ -45,6 +45,7 @@ class Singleplayer:
         """
         self.__pipes = []
         self.__pipe_to_delete_index = None
+        self.__first_generate_pipe = True
 
         self.__coins = []
         self.__coin_to_delete_index = None
@@ -70,11 +71,15 @@ class Singleplayer:
         self.__coins = []
         self.__coin_to_delete_index = None
 
+        self.__hand_last_seen = None
+        self.__hand_last_pos = None
+        self.__first_generate_pipe = True
+
         self.__running = False
 
     def run(self, q):
         if not self.__running:
-            pygame.time.set_timer(self.__GENERATE_PIPE_EVENT, 1000)
+            pygame.time.set_timer(self.__GENERATE_PIPE_EVENT, 3000)
             self.__running = True
 
         if self.__pipe_to_delete_index or self.__pipe_to_delete_index == 0:
@@ -89,6 +94,10 @@ class Singleplayer:
 
         for _ in pygame.event.get():
             if _.type == self.__GENERATE_PIPE_EVENT:
+                if self.__first_generate_pipe:
+                    pygame.time.set_timer(self.__GENERATE_PIPE_EVENT, 1000)
+                    self.__first_generate_pipe = False
+                    
                 PIPE = Pipe()
                 self.__pipes.append(PIPE)
 
@@ -160,7 +169,7 @@ class Singleplayer:
             
             if self.__hand_last_seen:
                 direction = hand_pos - self.__hand_last_seen
-                self.__bird.hand_movement(direction if self.__bird.get_position()[1] >= 0 else direction + 100)
+                self.__bird.hand_movement(direction if self.__bird.get_position()[1] >= 0 else 100)
             else:
                 self.__hand_last_seen = hand_pos
 

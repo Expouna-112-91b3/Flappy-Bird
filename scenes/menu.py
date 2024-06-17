@@ -26,7 +26,7 @@ class Menu():
         self.__play_button_color = 220
         self.__color_direction = .5
 
-        self.__playername = self.__config.get_playername()
+        self.__playername = ""
 
     def run(self):
         KEYS = pygame.key.get_pressed()
@@ -35,6 +35,7 @@ class Menu():
             if KEYS[pygame.K_SPACE]:
                 if len(self.__playername) == 6:
                     self.__config.set_playername(self.__playername)
+                    self.__playername = ""
                     self.__config.set_scene(Scenes.SINGLEPLAYER.value)
 
             if KEYS[pygame.K_ESCAPE]:
