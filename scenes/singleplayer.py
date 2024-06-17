@@ -110,8 +110,8 @@ class Singleplayer:
         for i, pipe in enumerate(self.__pipes):
             pipe.draw()
 
-            #if pipe.check_collision(self.__bird):
-            #    self.__bird.die()
+            if pipe.check_collision(self.__bird):
+                self.__bird.die()
 
             if pipe.check_flew_past(self.__bird):
                 self.__score.increase()

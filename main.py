@@ -16,7 +16,7 @@ import numpy as np
 import multiprocessing as multip
 
 
-def game():
+def game(q):
     CONFIG = Config()
     CONFIG.start_screen()
     CONFIG.setup_images()
@@ -88,4 +88,4 @@ def main():
 
 
 if __name__ == "__main__":
-    game()
+    main()
