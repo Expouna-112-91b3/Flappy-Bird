@@ -66,9 +66,9 @@ class Menu():
         self.__surface.blit(
             text_surface, (title_pos, self.__screen_height - 150))
 
-        input_pos = (self.__screen_width / 2 + 230, self.__screen_height + 150)
-
         ### NAME INPUT ###
+        input_pos = (self.__screen_width / 2 + 350, self.__screen_height + 150)
+
         pygame.draw.rect(
             self.__surface, (0, 0, 0),
             pygame.Rect(input_pos[0] - 3, input_pos[1] - 3, 236, 106))
@@ -76,8 +76,8 @@ class Menu():
         input_rect = pygame.draw.rect(
             self.__surface, (255, 255, 255),
             pygame.Rect(input_pos[0], input_pos[1], 230, 100))
-        ##################
-
+        
+        
         text_surface = self.__input_font.render(self.__playername,
                                                 False, (0, 0, 0))
 
@@ -88,6 +88,7 @@ class Menu():
                             centralized_text_surface.y)
         
         self.__surface.blit(text_surface, text_surface_pos)
+        ##################
 
         rgb = (self.__play_button_color,
                self.__play_button_color,

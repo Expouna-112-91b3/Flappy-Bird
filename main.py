@@ -49,7 +49,7 @@ def game(q):
 
 
 def hand_detection(q):
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     with mp_hands.Hands(min_detection_confidence=0.5,
                         min_tracking_confidence=0.5,
                         max_num_hands=1,
@@ -72,7 +72,7 @@ def hand_detection(q):
 
             cv2.imshow("Hand Tracking", image)
 
-            if pontos:
+            if pontos and len(pontos) == 21:
                 q.put(np.mean([i[1] for i in pontos]))
             else:
                 q.put("")

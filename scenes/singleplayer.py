@@ -111,6 +111,9 @@ class Singleplayer:
             if KEYS[pygame.K_ESCAPE]:
                 self.__config.close_game()
 
+            if KEYS[pygame.K_r]:
+                self.reset()
+
         if KEYS[pygame.K_w]:
             self.__bird.flap()
 
@@ -169,7 +172,7 @@ class Singleplayer:
             
             if self.__hand_last_seen:
                 direction = hand_pos - self.__hand_last_seen
-                self.__bird.hand_movement(direction if self.__bird.get_position()[1] >= 0 else 100)
+                self.__bird.hand_movement(direction if self.__bird.get_position()[1] >= 0 else direction + 100)
             else:
                 self.__hand_last_seen = hand_pos
 

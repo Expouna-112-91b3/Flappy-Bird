@@ -25,7 +25,7 @@ class Score:
             self.__font = Font("./fonts/default.ttf", 55)
 
             self.__current_score = 0
-            self.__scores = []
+            self.__scores = [["SAIMON", 44]]
 
     def draw(self):
         text_surface = self.__font.render(

@@ -25,7 +25,7 @@ class Pipe:
 
         self.__space_between_pipes = self.__bird_height * -5
 
-        self.__offset = randint(-271, 0)
+        self.__offset = randint(-90, 0)
         self.__top_pipe_y = self.__offset
         self.__bottom_pipe_y = self.__offset + \
             self.__pipe["height"] - self.__space_between_pipes

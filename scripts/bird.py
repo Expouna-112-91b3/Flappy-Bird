@@ -13,7 +13,6 @@ class Bird:
 
         self.__x = self.__user_screen["width"] / 3
 
-            
         self.__y = 400
         self.__y = 400
 
@@ -81,5 +80,5 @@ class Bird:
             self.__last_sprite_change_time = current_time
 
     def hand_movement(self, direction):
-        pos = (0, direction / 10)
+        pos = (0, direction / 9)
         self.__current_sprite_rect = self.__current_sprite_rect.move(pos)
